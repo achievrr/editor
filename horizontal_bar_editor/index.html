@@ -1,0 +1,4116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta and Title -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Card Customizer</title>
+    <!-- Include Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Arial&family=Courier+New&family=Montserrat&family=Playfair+Display&family=Roboto&family=Times+New+Roman&family=Dancing+Script&family=Pacifico&family=Satisfy&family=Great+Vibes&family=Amatic+SC&family=Sacramento&family=Kaushan+Script&family=Caveat&family=Indie+Flower&family=Bebas+Neue&family=Oswald&family=Abril+Fatface&family=Cinzel&family=Libre+Baskerville&family=Merriweather&family=Anton&family=Fredoka+One&family=Righteous&family=Lobster&family=Permanent+Marker&family=Special+Elite&family=Bangers&family=Architects+Daughter&family=Shadows+Into+Light&family=Philosopher&family=Comfortaa&family=Quicksand&family=Raleway&family=Josefin+Sans&family=Crimson+Text&family=Nunito&family=Parisienne&family=Tangerine&family=Allura&family=Alex+Brush&family=Berkshire+Swash&family=Courgette&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Styles -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            width: 100%;
+            max-width: 100%;
+            background: linear-gradient(45deg, #e6478d, #1e3a8a);
+            color: white;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+
+        * {
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+
+        html {
+            overflow-x: hidden;
+            max-width: 100vw;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 80px;
+            background: linear-gradient(45deg, #e6478d, #1e3a8a);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 16px 0;
+            align-items: center;
+            min-width: 80px;
+            max-width: 80px;
+        }
+
+        .sidebar button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 12px 0;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar button div {
+            margin-bottom: 5px;
+        }
+
+        .sidebar button div i {
+            font-size: 22px;
+            transition: transform 0.3s;
+        }
+
+        .sidebar button:hover div i {
+            transform: scale(1.2);
+        }
+
+        .sidebar button:hover,
+        .sidebar button.selected {
+            background-color: rgba(230, 71, 141, 0.8);
+            box-shadow: 0 0 15px rgba(230, 71, 141, 0.5);
+        }
+
+        .sidebar button::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-color: white;
+            transition: width 0.3s;
+        }
+
+        .sidebar button:hover::after,
+        .sidebar button.selected::after {
+            width: 80%;
+        }
+
+        .tool-panel {
+            width: 330px;
+            background-color: #f9fafb;
+            border-right: 1px solid #e2e8f0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            color: #4c1d95;
+        }
+
+        .tool-section {
+            margin-bottom: 20px;
+        }
+
+        .tool-section h4 {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+
+        .tool-button {
+            background-color: #4c1d95;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+            flex: 1 0 45%;
+            margin: 5px 0;
+        }
+
+        .tool-button:hover {
+            background-color: #372069;
+        }
+
+        .tool-button.active {
+            background-color: #4c1d95;
+            color: white;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 16px;
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .tab-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 16px;
+        }
+
+        .tab-buttons-left,
+        .tab-buttons-right {
+            display: flex;
+        }
+
+        .save-btn {
+            background-color: #4c1d95;
+            color: white;
+        }
+
+        .download-icon {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            background-color: #4c1d95;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .download-icon:hover {
+            transform: scale(1.1);
+            background-color: #e6478d;
+        }
+
+        .download-icon i {
+            font-size: 20px;
+        }
+
+        .tab-header button {
+            background: none;
+            border: none;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #4a5568;
+            transition: color 0.3s;
+        }
+
+        .tab-header button.active {
+            color: #e6478d;
+            border-bottom: 2px solid #e6478d;
+        }
+
+        .card-content {
+            flex: 1;
+            padding: 100px 16px 16px;
+            display: none;
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        .card-content.active {
+            display: block;
+        }
+
+        .design-area {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 400px;
+            height: 400px;
+            background: url('https://storage.googleapis.com/ownprint_public/jewelry_shapes/Horizontal%20Bar%20Template.png') no-repeat center center;
+            background-size: contain;
+            margin: 0 auto;
+            overflow: hidden;
+            max-width: 100%;
+            left: 0;
+            right: 0;
+        }
+
+        /* SVG Text on top */
+        .design-area #svg-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            /* Ensure text is on top */
+            pointer-events: none;
+            /* Allow clicks to pass through */
+        }
+
+        /* Allow interaction with text elements */
+        .design-area #svg-text text {
+            pointer-events: auto;
+        }
+
+        /* Other design items (images, elements) */
+        .design-area .design-item {
+            position: absolute;
+            z-index: 5;
+            /* Lower than text z-index */
+        }
+
+
+
+
+        .photo-preview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            width: 400px;
+            height: 400px;
+            overflow: hidden;
+            margin: auto;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #e6478d, #1e3a8a);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #4c1d95;
+        }
+
+        .slider {
+            width: 100%;
+            margin: 8px 0;
+            margin-left: 10px;
+            accent-color: #4c1d95;
+        }
+
+        .text-size-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .text-size-label span {
+            min-width: 40px;
+            text-align: left;
+        }
+
+        .design-item {
+            position: absolute;
+            cursor: pointer;
+            transform-origin: center center;
+        }
+
+        .upload-area {
+            border: 2px dashed #e6478d;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: background-color 0.3s, border-color 0.3s;
+            cursor: pointer;
+        }
+
+        .upload-area.hover {
+            background-color: #ebf8ff;
+            border-color: #e6478d;
+        }
+
+        .upload-area p {
+            margin: 0;
+            color: #e6478d;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .upload-area .upload-overlay {
+            display: none;
+            color: #4c1d95;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .selected-element {
+            outline: 2px solid #4c1d95;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* Resize handles */
+        .resize-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #4c1d95;
+            border: 2px solid white;
+            border-radius: 50%;
+            z-index: 1000;
+            cursor: nwse-resize;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .resize-handle:hover {
+            transform: scale(1.2);
+        }
+
+        .handle-nw {
+            top: -5px;
+            left: -5px;
+            cursor: nwse-resize;
+        }
+
+        .handle-ne {
+            top: -5px;
+            right: -5px;
+            cursor: nesw-resize;
+        }
+
+        .handle-sw {
+            bottom: -5px;
+            left: -5px;
+            cursor: nesw-resize;
+        }
+
+        .handle-se {
+            bottom: -5px;
+            right: -5px;
+            cursor: nwse-resize;
+        }
+
+        /* Rotation handle */
+        .rotation-handle {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-color: #e6478d;
+            border: 2px solid white;
+            border-radius: 50%;
+            z-index: 1000;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'><path d='M7.34 6.41L.86 12.9l6.48 6.48 6.48-6.48-6.48-6.49zM3.69 12.9l3.66-3.66L11 12.9l-3.66 3.66-3.65-3.66zm15.67-6.26C17.61 4.88 15.3 4 13 4V.76L8.76 5 13 9.24V6c1.79 0 3.58.68 4.95 2.05 2.73 2.73 2.73 7.17 0 9.9s-7.17 2.73-9.9 0c-.93-.93-1.56-2.04-1.88-3.21l-1.53-.3C5.1 16.52 6.03 18.2 7.34 19.5c3.9 3.9 10.24 3.9 14.14 0s3.9-10.24 0-14.14z'/></svg>") 12 12, auto;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            --line-height: 11px;
+        }
+
+        .rotation-handle::after {
+            content: "↻";
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .angle-indicator {
+            position: absolute;
+            background-color: rgba(76, 29, 149, 0.9);
+            color: white;
+            font-size: 12px;
+            padding: 3px 6px;
+            border-radius: 3px;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+            display: none;
+            font-family: 'Arial', sans-serif;
+            z-index: 1001;
+            white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .rotation-handle:hover {
+            transform: scale(1.1);
+        }
+
+        .rotation-handle::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            /* Start at the bottom of the handle */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: var(--line-height);
+            background-color: #e6478d;
+            opacity: 0.8;
+        }
+
+        .font-label {
+            font-size: 14px;
+            font-weight: normal;
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+
+        .font-dropdown {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+            width: 100%;
+        }
+
+        .font-dropdown-button {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            text-align: left;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .font-dropdown-options {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 100%;
+            max-height: 150px;
+            overflow-y: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .font-option {
+            padding: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: inherit;
+        }
+
+        .font-option:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Additional styles for new formatting options */
+        .formatting-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .format-button {
+            position: relative;
+            background-color: #e2e8f0;
+            border: none;
+            padding: 8px;
+            margin: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            color: #4a5568;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .format-button:hover {
+            background-color: #cbd5e0;
+        }
+
+        .format-button.active {
+            background-color: #4c1d95;
+            color: white;
+        }
+
+        .format-button i {
+            pointer-events: none;
+        }
+
+        .format-button input[type="color"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            left: 0;
+            top: 0;
+        }
+
+        .tool-textarea {
+            width: 100%;
+            margin-bottom: 8px;
+            height: 100px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Design Preview Styles */
+        .design-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: space-between;
+        }
+
+        .design-preview-item {
+            position: relative;
+            width: calc(33.333% - 7px);
+            height: 75px;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            flex: 0 0 auto;
+            margin-bottom: 5px;
+        }
+
+        .design-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .design-preview-item:hover {
+            box-shadow: 0 5px 15px rgba(230, 71, 141, 0.5);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .design-preview-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        /* Elements Container Styles */
+        .elements-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: space-between;
+            max-height: calc(100vh - 180px);
+            overflow-y: auto;
+            padding-right: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #e6478d #f9f9f9;
+        }
+
+        .elements-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .elements-container::-webkit-scrollbar-track {
+            background: #f9f9f9;
+            border-radius: 3px;
+        }
+
+        .elements-container::-webkit-scrollbar-thumb {
+            background-color: #e6478d;
+            border-radius: 3px;
+            border: 2px solid #f9f9f9;
+        }
+
+        /* Element item styles */
+        .element-item {
+            position: relative;
+            width: calc(33.333% - 7px);
+            height: 75px;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 8px;
+            background-color: white;
+        }
+
+        .element-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .element-item:hover {
+            box-shadow: 0 5px 15px rgba(230, 71, 141, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .element-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .element-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(76, 29, 149, 0.8);
+            color: white;
+            font-size: 10px;
+            padding: 3px 6px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .element-item:hover .element-name {
+            opacity: 1;
+        }
+
+        /* Search Box Styles */
+        .search-container {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        #design-search,
+        #element-search {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 2px solid #e6e6e6;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        #design-search:focus,
+        #element-search:focus {
+            outline: none;
+            border-color: #4c1d95;
+            box-shadow: 0 0 0 2px rgba(76, 29, 149, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            color: #888;
+            pointer-events: none;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            margin-top: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+        }
+
+        .search-results.active {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background-color: #f9f5ff;
+        }
+
+        .search-result-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+
+        .search-result-item .result-info {
+            flex: 1;
+        }
+
+        .search-result-item .result-name {
+            font-weight: 600;
+            color: #4c1d95;
+            margin-bottom: 3px;
+        }
+
+        .search-result-item .result-category {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            width: 100%;
+            font-size: 14px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        /* Design Categories Styles */
+        .design-categories {
+            margin-top: 15px;
+            overflow-y: auto;
+            max-height: calc(100vh - 250px);
+        }
+
+        .design-category {
+            margin-bottom: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #edf2f7;
+        }
+
+        .design-category:hover {
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            color: #4a5568;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-left: 3px solid #e6478d;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-header:hover {
+            background: linear-gradient(to right, #f1f3f5, #dee2e6);
+            color: #2d3748;
+        }
+
+        .category-header.active {
+            background: linear-gradient(to right, #e9ecef, #dee2e6);
+            color: #e6478d;
+        }
+
+        .category-header i {
+            transition: transform 0.3s ease;
+        }
+
+        .category-header.active i {
+            transform: rotate(180deg);
+        }
+
+        .category-content {
+            background-color: #fafafa;
+            padding: 15px;
+            display: none;
+            border-top: 1px solid #edf2f7;
+        }
+
+        .category-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* View More Button */
+        .view-more-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .view-more-btn {
+            background: #f8f9fa;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .view-more-btn:hover {
+            background: #fff;
+            color: #e6478d;
+            border-color: #e6478d;
+            box-shadow: 0 2px 5px rgba(230, 71, 141, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Designs Modal */
+        .designs-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow: auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .designs-modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 700px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .designs-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .designs-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4c1d95;
+        }
+
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: #4c1d95;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #e6478d;
+        }
+
+        .back-to-categories {
+            background: linear-gradient(45deg, #4c1d95, #6d28d9);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .back-to-categories i {
+            margin-right: 5px;
+        }
+
+        .back-to-categories:hover {
+            background: linear-gradient(45deg, #5a22b0, #7c3aed);
+        }
+
+        .modal-design-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .modal-design-preview .design-preview-item {
+            flex: 0 0 calc(33.333% - 10px);
+            width: calc(33.333% - 10px);
+            max-width: 90px;
+            min-width: 75px;
+            height: 75px;
+            margin: 0 0 20px 0;
+            position: relative;
+        }
+
+        .design-item-info {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 11px;
+            color: #4a5568;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Loading message styles */
+        .loading-message {
+            text-align: center;
+            padding: 20px;
+            color: #4c1d95;
+            font-size: 14px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.5;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .modal-design-preview .design-preview-item {
+                flex: 0 0 calc(50% - 6px);
+                width: calc(50% - 6px);
+            }
+        }
+
+        /* Selection and handle styles */
+        .resize-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #4c1d95;
+            border: 2px solid white;
+            border-radius: 50%;
+            z-index: 1000;
+            cursor: nwse-resize;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+            /* No animations or transitions */
+        }
+
+        .handle-nw {
+            top: -5px;
+            left: -5px;
+            cursor: nwse-resize;
+        }
+
+        .handle-ne {
+            top: -5px;
+            right: -5px;
+            cursor: nesw-resize;
+        }
+
+        .handle-sw {
+            bottom: -5px;
+            left: -5px;
+            cursor: nesw-resize;
+        }
+
+        .handle-se {
+            bottom: -5px;
+            right: -5px;
+            cursor: nwse-resize;
+        }
+
+        .rotation-handle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #e6478d;
+            border: 2px solid white;
+            border-radius: 50%;
+            z-index: 1000;
+            cursor: pointer;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .rotation-handle::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 10px;
+            background-color: #e6478d;
+            opacity: 0.8;
+        }
+
+        .rotation-handle::after {
+            content: "↻";
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .selected-element {
+            outline: 2px solid #4c1d95;
+            outline-offset: 2px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                overflow-x: hidden;
+                min-height: 100vh;
+                height: auto;
+                width: 100vw;
+                max-width: 100vw;
+                position: relative;
+            }
+
+            .sidebar {
+                flex-direction: row;
+                width: 100%;
+                min-width: 100%;
+                max-width: 100%;
+                height: 60px;
+                justify-content: space-around;
+                padding: 0;
+            }
+
+            .sidebar button {
+                font-size: 12px;
+            }
+
+            .tool-panel {
+                width: 100%;
+                order: 2;
+                max-height: 40vh;
+                overflow-y: auto;
+            }
+
+            .card {
+                margin: 0;
+                flex-shrink: 0;
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+
+            .card-content {
+                padding: 16px;
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+
+            .design-area {
+                width: 350px;
+                max-width: 350px;
+                height: 350px;
+                margin: 10px auto;
+                position: relative;
+                left: 0;
+                right: 0;
+            }
+
+            .tool-button {
+                font-size: 12px;
+                padding: 6px;
+            }
+
+            .text-size-label {
+                font-size: 12px;
+            }
+
+            .resize-handle {
+                width: 15px;
+                height: 15px;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            body {
+                overscroll-behavior: none;
+                /* Prevent overscroll/bounce effect */
+                width: 100vw;
+                max-width: 100vw;
+                overflow-x: hidden;
+                margin: 0;
+                padding: 0;
+            }
+
+            .sidebar {
+                height: 50px;
+                position: sticky;
+                top: 0;
+                z-index: 20;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .sidebar button {
+                font-size: 10px;
+            }
+
+            .sidebar button span {
+                display: none;
+            }
+
+            .sidebar button div {
+                font-size: 18px;
+            }
+
+            .sidebar button div i {
+                font-size: 20px;
+            }
+
+            .tool-panel {
+                max-height: 50vh;
+                min-height: 50vh;
+                padding: 10px;
+                position: sticky;
+                bottom: 0;
+                z-index: 10;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+                background: rgba(249, 250, 251, 0.98);
+                backdrop-filter: blur(5px);
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+                left: 0;
+                right: 0;
+                margin: 0;
+            }
+
+            .tool-section {
+                margin-bottom: 10px;
+            }
+
+            .tool-section h4 {
+                font-size: 14px;
+                margin-bottom: 5px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .tool-section h4::after {
+                content: "▼";
+                font-size: 10px;
+                transition: transform 0.3s;
+            }
+
+            .tool-section.collapsed h4::after {
+                transform: rotate(-90deg);
+            }
+
+            .design-area {
+                height: 280px;
+                max-width: 280px;
+                width: 280px;
+                touch-action: manipulation;
+                /* Improve touch behavior */
+                position: relative;
+                left: 0;
+                right: 0;
+                margin-left: auto;
+                margin-right: auto;
+                transform: none;
+            }
+
+            .design-categories {
+                max-height: calc(100vh - 350px);
+            }
+
+            .elements-container {
+                max-height: calc(100vh - 250px);
+            }
+
+            .element-item,
+            .design-preview-item {
+                width: calc(50% - 8px);
+                height: 60px;
+            }
+
+            .btn {
+                font-size: 14px;
+                padding: 8px 12px;
+                touch-action: manipulation;
+            }
+
+            /* Improved touch targets for mobile */
+            .format-button {
+                width: 42px;
+                height: 42px;
+                touch-action: manipulation;
+            }
+
+            .resize-handle {
+                width: 24px;
+                height: 24px;
+                border-radius: 12px;
+                touch-action: none;
+                /* Critical for proper handling of touch events */
+            }
+
+            /* Better slider experience on mobile */
+            input[type="range"] {
+                height: 30px;
+                touch-action: manipulation;
+            }
+
+            /* Make the slider labels more visible */
+            .text-size-label span {
+                min-width: 80px;
+                font-size: 13px;
+                font-weight: 500;
+            }
+
+            /* Larger resize handles for touch devices */
+            .resize-handle {
+                width: 24px;
+                height: 24px;
+                border: 3px solid white;
+            }
+
+            /* Stack tool-buttons for better visibility */
+            .add-text-buttons {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .add-text-buttons .tool-button {
+                margin: 5px 0;
+                height: 44px;
+                /* Taller buttons for better touch targets */
+            }
+
+            /* Adjust formatting toolbar for mobile */
+            .formatting-toolbar {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            /* Add moderate padding at bottom for mobile */
+            .card {
+                padding-bottom: 1vh;
+            }
+
+            /* Improve touch scrolling */
+            .design-categories,
+            .elements-container {
+                -webkit-overflow-scrolling: touch;
+                overflow-scrolling: touch;
+                scrollbar-width: thin;
+            }
+
+            /* Make modal more mobile-friendly */
+            .designs-modal-content {
+                width: 92%;
+                max-width: 92%;
+                margin: 10% auto;
+                padding: 10px;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+        }
+
+        /* Optional: Add a specific class for touch-only interface improvements */
+        @media (hover: none) {
+
+            /* Targeting touch devices only */
+            .resize-handle {
+                width: 20px;
+                height: 20px;
+                border: 2px solid white;
+                background-color: rgba(76, 29, 149, 0.8);
+            }
+
+            /* Make buttons more visible on touch devices */
+            .tool-button:active {
+                transform: scale(0.95);
+                transition: transform 0.1s;
+            }
+        }
+
+        /* Styles for Alignment Guides */
+        .alignment-guide {
+            position: absolute;
+            background-color: #4c1d95;
+            z-index: 1000;
+            display: none;
+        }
+
+        #vertical-guide {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+        }
+
+        #horizontal-guide {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <button id="btn-templates" onclick="selectTool('templates')">
+            <div><i class="fas fa-palette"></i></div>
+            <span>Design Vault</span>
+        </button>
+        <button id="btn-elements" onclick="selectTool('elements')">
+            <div><i class="fas fa-gem"></i></div>
+            <span>Elements</span>
+        </button>
+        <button id="btn-text" onclick="selectTool('text')">
+            <div><i class="fas fa-text-height"></i></div>
+            <span>Text</span>
+        </button>
+        <button id="btn-uploads" onclick="selectTool('uploads')">
+            <div><i class="fas fa-cloud-upload-alt"></i></div>
+            <span>Uploads</span>
+        </button>
+    </div>
+
+    <!-- Tool Panel -->
+    <div class="tool-panel" id="tool-panel">
+        <div id="tool-content">
+            <!-- Content based on selected tool will be displayed here -->
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card">
+        <div class="tab-header">
+            <div class="tab-buttons-left">
+                <button class="tab-btn active" onclick="switchTab('edit')">Edit</button>
+            </div>
+            <div class="tab-buttons-right">
+                <button class="tab-btn save-btn" onclick="downloadDesign('upload')">Continue</button>
+            </div>
+        </div>
+
+        <div class="card-content active" id="edit-tab">
+            <div class="design-area" id="design-area">
+                <svg class="svg-text" id="svg-text" width="100%" height="100%" viewBox="0 0 400 400"
+                    preserveAspectRatio="xMidYMid meet" style="position: absolute;">
+                    <g id="text-group">
+                        <!-- Text elements will be added here dynamically -->
+                    </g>
+                </svg>
+                <div id="vertical-guide" class="alignment-guide"></div>
+                <div id="horizontal-guide" class="alignment-guide"></div>
+            </div>
+            <button class="download-icon" onclick="downloadDesign('download')" title="Download Design">
+                <i class="fas fa-download"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Design Modal -->
+    <div id="designs-modal" class="designs-modal">
+        <div class="designs-modal-content">
+            <div class="designs-modal-header">
+                <div class="designs-modal-title">All Designs</div>
+                <span class="close-modal" onclick="closeDesignsModal()">&times;</span>
+            </div>
+            <div id="modal-designs-container" class="modal-design-preview">
+                <!-- Designs will be loaded here dynamically -->
+            </div>
+            <button class="back-to-categories" onclick="closeDesignsModal()">
+                <i class="fas fa-arrow-left"></i> Back to Categories
+            </button>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script>
+        let textState = {
+            content: '',
+            fontSize: 24,
+            fontFamily: 'Arial',
+            rotate: 0,
+            curve: 0,
+            isBold: false,
+            isItalic: false,
+            isUnderline: false,
+            isStrikethrough: false,
+            textAlign: 'middle',
+            lineHeight: 1.2,
+            letterSpacing: 0,
+            textTransform: 'none',
+            translateX: 0,
+            translateY: 0,
+            scale: 1
+        };
+
+        let selectedElement = null;
+        let elementState = new Map(); // To keep track of each element's state
+        let lastSelectedTextElement = null; // Global variable to store the last selected text element
+
+        // Function to load design categories dynamically
+        function loadDesignCategories() {
+            const categoriesContainer = document.getElementById('design-categories');
+            if (!categoriesContainer) return;
+
+            // Clear the container
+            categoriesContainer.innerHTML = '';
+
+            // Check if designs and categories are loaded
+            if (Object.keys(sampleDesigns).length === 0 || Object.keys(categoryMap).length === 0) {
+                categoriesContainer.innerHTML = '<div class="loading-message">Loading designs...</div>';
+                // Try again in a moment
+                setTimeout(loadDesignCategories, 500);
+                return;
+            }
+
+            // Create category sections
+            Object.keys(sampleDesigns).forEach(categoryId => {
+                const categoryName = getCategoryName(categoryId);
+                const designs = sampleDesigns[categoryId];
+
+                // Create category container
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'design-category';
+
+                // Create header
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'category-header';
+                headerDiv.setAttribute('onclick', `toggleCategory('${categoryId}')`);
+                headerDiv.innerHTML = `
+                    <span>${categoryName}</span>
+                    <i class="fas fa-chevron-down"></i>
+                `;
+
+                // Create content
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'category-content';
+                contentDiv.id = categoryId;
+
+                // Create preview container
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'design-preview';
+
+                // Add preview items (limit to 6 for display)
+                const previewItems = designs.slice(0, 6);
+                previewItems.forEach(design => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'design-preview-item';
+                    itemDiv.innerHTML = `<img src="${design.src}" alt="${design.alt}" onclick="loadImageFromURL('${design.fullSrc}')">`;
+                    previewDiv.appendChild(itemDiv);
+                });
+
+                // Add view more button if there are more than 6 designs
+                let viewMoreDiv = '';
+                if (designs.length > 6) {
+                    viewMoreDiv = `
+                        <div class="view-more-container">
+                            <button class="view-more-btn" onclick="showAllDesigns('${categoryId}')">View All ${categoryName} Designs</button>
+                        </div>
+                    `;
+                }
+
+                // Assemble content
+                contentDiv.innerHTML = previewDiv.outerHTML + viewMoreDiv;
+
+                // Assemble category
+                categoryDiv.appendChild(headerDiv);
+                categoryDiv.appendChild(contentDiv);
+
+                // Add to container
+                categoriesContainer.appendChild(categoryDiv);
+            });
+
+            // Open the first category by default
+            setTimeout(() => {
+                const firstCategory = document.querySelector('.category-header');
+                if (firstCategory) {
+                    firstCategory.click();
+                }
+            }, 300);
+        }
+
+        // Initialize the application
+        async function initializeApp() {
+            // Wait for all data to be loaded
+            await Promise.all([
+                loadDesignsData(),
+                loadElementsData(),
+                loadCategoriesData(),
+                loadFontsData()
+            ]);
+
+            // Initialize the UI
+            selectTool('templates'); // Pre-select the Templates tool on load
+            saveState(); // Save the initial state
+
+            console.log('Application initialized successfully');
+        }
+
+        // On DOM ready, start the application
+        document.addEventListener("DOMContentLoaded", () => {
+            // Initialize the application
+            initializeApp();
+
+            // Add mobile-specific enhancements
+            if (window.innerWidth <= 480) {
+                setupMobileEnhancements();
+            }
+        });
+
+        // Setup enhancements for mobile experience
+        function setupMobileEnhancements() {
+            // Make tool sections collapsible on mobile
+            document.addEventListener('click', function (event) {
+                if (event.target.tagName === 'H4' && event.target.parentElement.classList.contains('tool-section')) {
+                    const section = event.target.parentElement;
+                    const content = Array.from(section.children).filter(el => el !== event.target);
+
+                    if (section.classList.contains('collapsed')) {
+                        section.classList.remove('collapsed');
+                        content.forEach(el => el.style.display = '');
+                    } else {
+                        section.classList.add('collapsed');
+                        content.forEach(el => el.style.display = 'none');
+                    }
+                }
+            });
+
+            // Make resize handles easier to target
+            const style = document.createElement('style');
+            style.textContent = `
+                .resize-handle::after {
+                    content: "";
+                    position: absolute;
+                    top: -10px;
+                    left: -10px;
+                    right: -10px;
+                    bottom: -10px;
+                    z-index: -1;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Function to toggle category dropdowns
+        function toggleCategory(categoryId) {
+            const contentElement = document.getElementById(categoryId);
+            const headerElement = contentElement.previousElementSibling;
+
+            // Check if this category is already active
+            const isActive = contentElement.classList.contains('active');
+
+            // First close all categories (optional - remove if you want multiple open at once)
+            document.querySelectorAll('.category-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            document.querySelectorAll('.category-header').forEach(header => {
+                header.classList.remove('active');
+            });
+
+            // Toggle the clicked category
+            if (!isActive) {
+                contentElement.classList.add('active');
+                headerElement.classList.add('active');
+            }
+        }
+
+        // Load designs from JSON file
+        let sampleDesigns = {};
+
+        // Function to load JSON data
+        async function loadDesignsData() {
+            try {
+                const response = await fetch('/horizontal_bar_editor/designs.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                sampleDesigns = await response.json();
+                console.log('Designs data loaded successfully');
+            } catch (error) {
+                console.error('Error loading designs data:', error);
+                // Fallback with basic sample data
+                sampleDesigns = {
+                    'anniversaries': [
+                        { src: 'https://via.placeholder.com/100?text=A1', alt: 'Anniversary 1', fullSrc: 'https://via.placeholder.com/400' },
+                        { src: 'https://via.placeholder.com/100?text=A2', alt: 'Anniversary 2', fullSrc: 'https://via.placeholder.com/400' },
+                        { src: 'https://via.placeholder.com/100?text=A3', alt: 'Anniversary 3', fullSrc: 'https://via.placeholder.com/400' }
+                    ],
+                    'birthdays': [
+                        { src: 'https://via.placeholder.com/100?text=B1', alt: 'Birthday 1', fullSrc: 'https://via.placeholder.com/400' },
+                        { src: 'https://via.placeholder.com/100?text=B2', alt: 'Birthday 2', fullSrc: 'https://via.placeholder.com/400' }
+                    ],
+                    'zodiac': [
+                        { src: 'https://via.placeholder.com/100?text=Z1', alt: 'Zodiac 1', fullSrc: 'https://via.placeholder.com/400' }
+                    ]
+                };
+            }
+        }
+
+        // Load designs data at startup
+        loadDesignsData();
+
+        // Function to show all designs in a category
+        function showAllDesigns(categoryId) {
+            const modal = document.getElementById('designs-modal');
+            const modalContainer = document.getElementById('modal-designs-container');
+            const modalTitle = document.querySelector('.designs-modal-title');
+
+            // Clear previous content
+            modalContainer.innerHTML = '';
+
+            // Set title
+            const categoryName = document.querySelector(`#${categoryId}`).previousElementSibling.querySelector('span').textContent;
+            modalTitle.textContent = `All ${categoryName} Designs`;
+
+            // Get designs for this category
+            const designs = sampleDesigns[categoryId] || [];
+
+            // Add all designs to the modal
+            designs.forEach(design => {
+                const designItem = document.createElement('div');
+                designItem.className = 'design-preview-item';
+                designItem.innerHTML = `<img src="${design.src}" alt="${design.alt}" onclick="loadImageFromURL('${design.fullSrc}'); closeDesignsModal();">`;
+                modalContainer.appendChild(designItem);
+            });
+
+            // Show the modal
+            modal.style.display = 'block';
+
+            // Prevent scrolling on the body
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Function to close the designs modal
+        function closeDesignsModal() {
+            const modal = document.getElementById('designs-modal');
+            modal.style.display = 'none';
+
+            // Re-enable scrolling on the body
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function (event) {
+            const modal = document.getElementById('designs-modal');
+            if (event.target === modal) {
+                closeDesignsModal();
+            }
+
+            // Close search results when clicking outside
+            const searchResults = document.getElementById('search-results');
+            const searchInput = document.getElementById('design-search');
+            if (searchResults && event.target !== searchResults && event.target !== searchInput && !searchResults.contains(event.target)) {
+                searchResults.classList.remove('active');
+            }
+        }
+
+        // Search functionality
+        function searchDesigns() {
+            const searchInput = document.getElementById('design-search');
+            const searchResults = document.getElementById('search-results');
+            const searchQuery = searchInput.value.trim().toLowerCase();
+
+            // Clear results
+            searchResults.innerHTML = '';
+
+            if (searchQuery.length < 2) {
+                searchResults.classList.remove('active');
+                return;
+            }
+
+            // Process all designs from all categories
+            let allDesigns = [];
+            let resultCount = 0;
+
+            for (const categoryId in sampleDesigns) {
+                const categoryDesigns = sampleDesigns[categoryId];
+                const categoryName = getCategoryName(categoryId);
+
+                categoryDesigns.forEach(design => {
+                    const designName = design.alt.toLowerCase();
+                    if (designName.includes(searchQuery)) {
+                        allDesigns.push({
+                            ...design,
+                            categoryId,
+                            categoryName
+                        });
+                        resultCount++;
+                    }
+                });
+            }
+
+            // Display results or "no results" message
+            if (resultCount > 0) {
+                allDesigns.slice(0, 10).forEach(design => { // Limit to 10 results
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    resultItem.innerHTML = `
+                        <img src="${design.src}" alt="${design.alt}">
+                        <div class="result-info">
+                            <div class="result-name">${design.alt}</div>
+                            <div class="result-category">${design.categoryName}</div>
+                        </div>
+                    `;
+
+                    resultItem.addEventListener('click', () => {
+                        loadImageFromURL(design.fullSrc);
+                        searchResults.classList.remove('active');
+                        searchInput.value = '';
+                    });
+
+                    searchResults.appendChild(resultItem);
+                });
+
+                if (resultCount > 10) {
+                    const moreResults = document.createElement('div');
+                    moreResults.className = 'search-result-item';
+                    moreResults.innerHTML = `
+                        <div class="result-info">
+                            <div class="result-name">See all ${resultCount} results...</div>
+                        </div>
+                    `;
+
+                    moreResults.addEventListener('click', () => {
+                        showSearchResults(searchQuery, allDesigns);
+                        searchResults.classList.remove('active');
+                    });
+
+                    searchResults.appendChild(moreResults);
+                }
+            } else {
+                const noResults = document.createElement('div');
+                noResults.className = 'no-results';
+                noResults.textContent = 'No designs found';
+                searchResults.appendChild(noResults);
+            }
+
+            searchResults.classList.add('active');
+        }
+
+        // Load categories from JSON file
+        let categoryMap = {};
+
+        // Function to load categories data
+        async function loadCategoriesData() {
+            try {
+                const response = await fetch('/horizontal_bar_editor/categories.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // Convert array to object for easy lookup
+                categoryMap = {};
+                data.categories.forEach(category => {
+                    categoryMap[category.id] = category.name;
+                });
+
+                console.log('Categories data loaded successfully');
+            } catch (error) {
+                console.error('Error loading categories data:', error);
+                // Fallback with hard-coded values
+                categoryMap = {
+                    'anniversaries': 'Anniversaries',
+                    'birthdays': 'Birthdays',
+                    'romantic': 'Romantic & Couples',
+                    'pets': 'Pets & Animal Lovers',
+                    'inspirational': 'Inspirational & Faith-Based',
+                    'family': 'Family & Loved Ones',
+                    'zodiac': 'Zodiac & Astrology',
+                    'memorial': 'Memorial & Keepsakes',
+                    'minimalist': 'Minimalist & Initials'
+                };
+            }
+        }
+
+        // Load categories data at startup
+        loadCategoriesData();
+
+        // Get category name from ID
+        function getCategoryName(categoryId) {
+            return categoryMap[categoryId] || categoryId;
+        }
+
+        // Show all search results in modal
+        function showSearchResults(query, results) {
+            const modal = document.getElementById('designs-modal');
+            const modalContainer = document.getElementById('modal-designs-container');
+            const modalTitle = document.querySelector('.designs-modal-title');
+
+            // Clear previous content
+            modalContainer.innerHTML = '';
+
+            // Set title
+            modalTitle.textContent = `Search Results for "${query}"`;
+
+            // Add all matching designs to the modal
+            results.forEach(design => {
+                const designItem = document.createElement('div');
+                designItem.className = 'design-preview-item';
+                designItem.innerHTML = `
+                    <img src="${design.src}" alt="${design.alt}" onclick="loadImageFromURL('${design.fullSrc}'); closeDesignsModal();">
+                    <div class="design-item-info">${design.alt}</div>
+                `;
+                modalContainer.appendChild(designItem);
+            });
+
+            // Show the modal
+            modal.style.display = 'block';
+
+            // Prevent scrolling on the body
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Load elements from JSON file
+        let elementsLibrary = [];
+
+        // Function to load elements data
+        async function loadElementsData() {
+            try {
+                const response = await fetch('/horizontal_bar_editor/elements.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                elementsLibrary = await response.json();
+                console.log('Elements data loaded successfully');
+            } catch (error) {
+                console.error('Error loading elements data:', error);
+                // Fallback with basic elements data
+                elementsLibrary = [
+                    {
+                        category: 'Shapes',
+                        elements: [
+                            { name: 'Circle', src: 'https://via.placeholder.com/75?text=Circle', fullSrc: 'https://via.placeholder.com/400?text=Circle' },
+                            { name: 'Square', src: 'https://via.placeholder.com/75?text=Square', fullSrc: 'https://via.placeholder.com/400?text=Square' },
+                            { name: 'Triangle', src: 'https://via.placeholder.com/75?text=Triangle', fullSrc: 'https://via.placeholder.com/400?text=Triangle' }
+                        ]
+                    },
+                    {
+                        category: 'Symbols',
+                        elements: [
+                            { name: 'Heart', src: 'https://via.placeholder.com/75?text=Heart', fullSrc: 'https://via.placeholder.com/400?text=Heart' },
+                            { name: 'Star', src: 'https://via.placeholder.com/75?text=Star', fullSrc: 'https://via.placeholder.com/400?text=Star' }
+                        ]
+                    }
+                ];
+            }
+        }
+
+        // Load elements data at startup
+        loadElementsData();
+
+        // Load Elements Library
+        function loadElementsLibrary() {
+            const elementsContainer = document.getElementById('elements-container');
+            if (!elementsContainer) return;
+
+            // Clear container
+            elementsContainer.innerHTML = '';
+
+            // Flatten all elements for display
+            const allElements = [];
+            elementsLibrary.forEach(category => {
+                category.elements.forEach(element => {
+                    allElements.push({
+                        ...element,
+                        category: category.category
+                    });
+                });
+            });
+
+            // Display all elements
+            displayElements(allElements, elementsContainer);
+        }
+
+        // Display elements in container
+        function displayElements(elements, container) {
+            elements.forEach(element => {
+                const elementItem = document.createElement('div');
+                elementItem.className = 'element-item';
+                elementItem.innerHTML = `
+                    <img src="${element.src}" alt="${element.name}" onclick="loadImageFromURL('${element.fullSrc}')">
+                    <div class="element-name">${element.name}</div>
+                `;
+                container.appendChild(elementItem);
+            });
+        }
+
+        // Search elements
+        function searchElements() {
+            const searchInput = document.getElementById('element-search');
+            const elementsContainer = document.getElementById('elements-container');
+
+            if (!searchInput || !elementsContainer) return;
+
+            const searchQuery = searchInput.value.trim().toLowerCase();
+
+            // Clear container
+            elementsContainer.innerHTML = '';
+
+            if (searchQuery.length < 2 && searchQuery.length !== 0) {
+                loadElementsLibrary(); // Reload all elements if search is cleared or too short
+                return;
+            }
+
+            // Filter elements by search query
+            const filteredElements = [];
+            elementsLibrary.forEach(category => {
+                category.elements.forEach(element => {
+                    if (element.name.toLowerCase().includes(searchQuery)) {
+                        filteredElements.push({
+                            ...element,
+                            category: category.category
+                        });
+                    }
+                });
+            });
+
+            // Display filtered elements
+            if (filteredElements.length > 0) {
+                displayElements(filteredElements, elementsContainer);
+            } else {
+                elementsContainer.innerHTML = '<div class="no-results">No elements found</div>';
+            }
+        }
+
+        // Define a global array to store states
+        let undoStack = [];
+        let redoStack = [];
+        const MAX_UNDO_STEPS = 20; // Limit the number of undo steps
+
+        // Function to save the current state
+        function saveState() {
+            const designArea = document.getElementById('design-area');
+            const currentState = designArea.innerHTML;
+
+            undoStack.push(currentState);
+            if (undoStack.length > MAX_UNDO_STEPS) {
+                undoStack.shift(); // Remove the oldest state if we exceed the limit
+            }
+            redoStack = []; // Clear redo stack when a new action is performed
+        }
+
+        // Function to undo the last action
+        function undo() {
+            if (undoStack.length > 1) { // Keep at least one state in the stack
+                const currentState = undoStack.pop();
+                redoStack.push(currentState);
+
+                const previousState = undoStack[undoStack.length - 1];
+                applyState(previousState);
+            }
+        }
+
+        // Function to redo the last undone action
+        function redo() {
+            if (redoStack.length > 0) {
+                const nextState = redoStack.pop();
+                undoStack.push(nextState);
+                applyState(nextState);
+            }
+        }
+
+        // Function to apply a state to the design area
+        function applyState(state) {
+            const designArea = document.getElementById('design-area');
+            designArea.innerHTML = state;
+            restoreEventListeners();
+        }
+
+        // Function to restore event listeners after state change
+        function restoreEventListeners() {
+            const elements = document.querySelectorAll('.design-item, #text-group text');
+            elements.forEach(element => {
+                element.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    selectElement(element);
+                });
+                makeElementDraggable(element);
+                // Enable inline editing
+                if (element.tagName === 'text') {
+                    element.addEventListener('dblclick', (event) => {
+                        enableInlineEditing(element);
+                    });
+                }
+            });
+
+            // Reattach drag-and-drop event listeners for uploads
+            const uploadArea = document.getElementById('upload-area');
+            if (uploadArea) {
+                uploadArea.addEventListener('dragover', (e) => e.preventDefault());
+                uploadArea.addEventListener('drop', handleDrop);
+            }
+        }
+
+        // Add event listeners for undo and redo
+        document.addEventListener('keydown', (event) => {
+            if (event.ctrlKey && event.key === 'z') {
+                event.preventDefault();
+                undo();
+            } else if (event.ctrlKey && event.key === 'y') {
+                event.preventDefault();
+                redo();
+            }
+        });
+
+        function switchTab(tab) {
+            const editTab = document.getElementById('edit-tab');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+
+            // Always show edit tab since we removed the preview tab
+            editTab.classList.add('active');
+            tabButtons[0].classList.add('active');
+        }
+
+        function confirmDesign() {
+            alert('Design confirmed! Moving to the next step.');
+        }
+
+        function selectTool(tool) {
+            const toolContent = document.getElementById('tool-content');
+            const buttons = document.querySelectorAll('.sidebar button');
+            buttons.forEach(button => button.classList.remove('selected'));
+
+            document.getElementById(`btn-${tool}`).classList.add('selected');
+
+            if (tool === 'text') {
+                toolContent.innerHTML = `
+                <div class="tool-section">
+                    <h4>Text</h4>
+                    <div class="add-text-buttons">
+                        <button class="tool-button" onclick="addHeading(event)">Add Heading</button>
+                        <button class="tool-button" onclick="addParagraph(event)">Add Paragraph</button>
+                    </div>
+                    <textarea id="text-input" class="tool-textarea" placeholder="Type here to add text" oninput="updateSelectedText()"></textarea>
+                    <div class="formatting-toolbar">
+                        <button class="format-button" onclick="toggleBold()" title="Bold"><i class="fas fa-bold"></i></button>
+                        <button class="format-button" onclick="toggleItalic()" title="Italic"><i class="fas fa-italic"></i></button>
+                        <button class="format-button" onclick="toggleUnderline()" title="Underline"><i class="fas fa-underline"></i></button>
+                        <button class="format-button" onclick="toggleStrikethrough()" title="Strikethrough"><i class="fas fa-strikethrough"></i></button>
+                        <button class="format-button" onclick="changeTextAlign('left')" title="Align Left"><i class="fas fa-align-left"></i></button>
+                        <button class="format-button" onclick="changeTextAlign('center')" title="Align Center"><i class="fas fa-align-center"></i></button>
+                        <button class="format-button" onclick="changeTextAlign('right')" title="Align Right"><i class="fas fa-align-right"></i></button>
+                        <button class="format-button" onclick="toggleUppercase()" title="Toggle Uppercase">
+                            <span class="uppercase-toggle">aA</span>
+                        </button>
+                    </div>
+                    <div class="advanced-options">
+                        <div class="text-size-label">
+                            <span>Font</span>
+                            <div class="font-dropdown" id="fontDropdown">
+                                <button class="font-dropdown-button" id="fontDropdownButton" style="font-family: ${textState.fontFamily};">${textState.fontFamily}</button>
+                                <div class="font-dropdown-options" id="fontDropdownOptions">
+                                    <!-- Dynamically populated -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-size-label">
+                            <span><i class="fas fa-text-height" title="Line Height"></i></span>
+                            <input type="range" id="line-height" min="1" max="3" step="0.1" value="${textState.lineHeight}" class="slider" oninput="updateLineHeight()">
+                        </div>
+                        <div class="text-size-label">
+                            <span><i class="fas fa-text-width" title="Letter Spacing"></i></span>
+                            <input type="range" id="letter-spacing" min="0" max="10" step="0.5" value="${textState.letterSpacing}" class="slider" oninput="updateLetterSpacing()">
+                        </div>
+                        <div class="text-size-label">
+                            <span><i class="fas fa-bezier-curve" title="Text Curve"></i></span>
+                            <input type="range" id="text-curve" min="-100" max="100" step="1" value="${textState.curve}" class="slider" oninput="updateTextCurve()">
+                        </div>
+                    </div>
+                </div>`;
+
+                // Delay initialization to ensure DOM elements are available
+                setTimeout(() => {
+                    initializeFontDropdown();
+                    updateText();
+
+                    // Reapply selection to the last selected text element if available
+                    if (lastSelectedTextElement) {
+                        selectTextElement(lastSelectedTextElement);
+                    }
+
+                }, 0);
+            } else if (tool === 'templates') {
+                // Add templates content (now loads dynamically from JSON)
+                toolContent.innerHTML = `
+                <div class="tool-section">
+                    <h4>Design Vault</h4>
+
+                    <!-- Search Box -->
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <input type="text" id="design-search" placeholder="Search designs..." oninput="searchDesigns()">
+                            <i class="fas fa-search search-icon"></i>
+                        </div>
+                        <div id="search-results" class="search-results"></div>
+                    </div>
+
+                    <!-- Categories in Dropdowns -->
+                    <div class="design-categories" id="design-categories">
+                        <!-- Categories will be loaded dynamically -->
+                    </div>
+                </div>`;
+
+                // Function to load design categories
+                loadDesignCategories();
+            } else if (tool === 'elements') {
+                // Add elements content (loads dynamically from JSON)
+                toolContent.innerHTML = `
+                <div class="tool-section">
+                    <h4>Elements</h4>
+
+                    <!-- Search Box for Elements -->
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <input type="text" id="element-search" placeholder="Search elements..." oninput="searchElements()">
+                            <i class="fas fa-search search-icon"></i>
+                        </div>
+                    </div>
+
+                    <!-- Elements Container -->
+                    <div id="elements-container" class="elements-container">
+                        <!-- Elements will be loaded dynamically -->
+                    </div>
+                </div>`;
+
+                // Call function to load elements after HTML is set
+                setTimeout(() => {
+                    // Check if elements data is loaded
+                    if (elementsLibrary.length === 0) {
+                        const elementsContainer = document.getElementById('elements-container');
+                        if (elementsContainer) {
+                            elementsContainer.innerHTML = '<div class="loading-message">Loading elements...</div>';
+                            // Try again after a delay
+                            setTimeout(loadElementsLibrary, 500);
+                        }
+                    } else {
+                        loadElementsLibrary();
+                    }
+                }, 0);
+            } else if (tool === 'uploads') {
+                // Add your uploads content here
+                toolContent.innerHTML = `
+                <div class="tool-section">
+                    <h4>Uploads</h4>
+                    <input type="file" id="file-upload" class="tool-button" accept="image/*" style="width: 100%; box-sizing: border-box; margin-bottom: 8px;" onchange="handleFileUpload(event)">
+                    <div class="upload-area" id="upload-area">
+                        <p>Drag and drop your design here.</p>
+                        <p style="font-size: 12px; color: #555;">Note: Only transparent, black designs suitable for laser engraving.</p>
+                    </div>
+                </div>`;
+
+                // Drag and drop event listeners for upload area
+                const uploadArea = document.getElementById('upload-area');
+                uploadArea.addEventListener('dragover', (e) => e.preventDefault());
+                uploadArea.addEventListener('drop', handleDrop);
+            } else {
+                toolContent.innerHTML = '<div class="tool-section"><h4>' + tool.charAt(0).toUpperCase() + tool.slice(1) + '</h4></div>';
+            }
+        }
+
+        // Load fonts from JSON file
+        let fonts = [];
+
+        // Function to load fonts data
+        async function loadFontsData() {
+            try {
+                const response = await fetch('/horizontal_bar_editor/fonts.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                fonts = await response.json();
+                console.log('Fonts data loaded successfully');
+            } catch (error) {
+                console.error('Error loading fonts data:', error);
+                // Fallback with default fonts
+                fonts = [
+                    { name: 'Arial', family: 'Arial' },
+                    { name: 'Times New Roman', family: 'Times New Roman' },
+                    { name: 'Courier New', family: 'Courier New' },
+                    { name: 'Roboto', family: 'Roboto' },
+                    { name: 'Montserrat', family: 'Montserrat' },
+                    { name: 'Playfair Display', family: 'Playfair Display' }
+                ];
+            }
+        }
+
+        // Load fonts data at startup
+        loadFontsData();
+
+        // Initialize Font Dropdown
+        function initializeFontDropdown() {
+            const dropdownButton = document.getElementById('fontDropdownButton');
+            const dropdownOptions = document.getElementById('fontDropdownOptions');
+
+            fonts.forEach(font => {
+                const option = document.createElement('div');
+                option.classList.add('font-option');
+                option.setAttribute('data-font', font.family);
+                option.style.fontFamily = font.family;
+                option.textContent = font.name;
+                dropdownOptions.appendChild(option);
+
+                option.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const selectedFont = option.getAttribute('data-font');
+                    dropdownButton.textContent = selectedFont;
+                    dropdownButton.style.fontFamily = selectedFont;
+                    dropdownOptions.style.display = 'none';
+
+                    textState.fontFamily = selectedFont;
+
+                    if (selectedElement && selectedElement.tagName === 'text') {
+                        updateText();
+                    }
+                });
+            });
+
+            dropdownButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                dropdownOptions.style.display = dropdownOptions.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener('click', (event) => {
+                if (!dropdownButton.contains(event.target) && !dropdownOptions.contains(event.target)) {
+                    dropdownOptions.style.display = 'none';
+                }
+            });
+        }
+
+        // Add Heading
+        function addHeading(event) {
+            event.stopPropagation();
+
+            // Get the design area dimensions for responsive positioning
+            const designArea = document.getElementById('design-area');
+            const designAreaWidth = designArea.clientWidth || 400;
+            const designAreaHeight = designArea.clientHeight || 400;
+
+            // Add small offset for mobile devices to position more to the right
+            const isMobile = window.innerWidth <= 480;
+            const mobileOffset = isMobile ? 15 : 0; // 15px offset on mobile only
+
+            const initialPosition = {
+                translateX: (designAreaWidth / 2) + mobileOffset, // Centered horizontally with mobile adjustment
+                translateY: designAreaHeight * 0.67, // Positioned at 2/3 vertically
+                scale: 1,
+                rotate: 0
+            };
+
+            const newHeading = addTextElement('Heading Text', {
+                fontSize: 36,
+                fontWeight: 'bold',
+                fontFamily: 'Arial',
+                isBold: true
+            }, initialPosition); // Pass initialPosition here
+
+            addElementToCanvas(newHeading);
+            selectTextElement(newHeading);
+            document.getElementById('text-input').focus();
+        }
+
+        // Add Paragraph
+        function addParagraph(event) {
+            event.stopPropagation();
+
+            // Get the design area dimensions for responsive positioning
+            const designArea = document.getElementById('design-area');
+            const designAreaWidth = designArea.clientWidth || 400;
+            const designAreaHeight = designArea.clientHeight || 400;
+
+            // Add small offset for mobile devices to position more to the right
+            const isMobile = window.innerWidth <= 480;
+            const mobileOffset = isMobile ? 15 : 0; // 15px offset on mobile only
+
+            const initialPosition = {
+                translateX: (designAreaWidth / 2) + mobileOffset, // Centered horizontally with mobile adjustment
+                translateY: designAreaHeight * 0.75, // Positioned at 3/4 vertically
+                scale: 1,
+                rotate: 0
+            };
+
+            const newParagraph = addTextElement('Paragraph text...', {
+                fontSize: 18,
+                fontWeight: 'normal',
+                fontFamily: 'Arial',
+                isBold: false
+            }, initialPosition); // Pass initialPosition here
+
+            addElementToCanvas(newParagraph);
+            selectTextElement(newParagraph);
+            document.getElementById('text-input').focus();
+        }
+
+        // Add Text Element
+        function addTextElement(content, style, initialPosition = null) {
+            const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+
+            // Preserve whitespace
+            textElement.setAttribute('xml:space', 'preserve');
+            textElement.style.whiteSpace = 'pre';
+
+            // Set initial position
+            // Get the design area dimensions for responsive positioning
+            const designArea = document.getElementById('design-area');
+            const designAreaWidth = designArea.clientWidth || 400;
+            const designAreaHeight = designArea.clientHeight || 400;
+
+            // Add small offset for mobile devices to position more to the right
+            const isMobile = window.innerWidth <= 480;
+            const mobileOffset = isMobile ? 15 : 0; // 15px offset on mobile only
+
+            const initialState = initialPosition || {
+                translateX: (designAreaWidth / 2) + mobileOffset, // Center of design area width with mobile adjustment
+                translateY: designAreaHeight / 3, // One third down from the top
+                scale: 1,
+                rotate: 0
+            };
+
+            elementState.set(textElement, initialState);
+
+            // Set initial transform
+            textElement.setAttribute(
+                'transform',
+                `translate(${initialState.translateX}, ${initialState.translateY}) rotate(${initialState.rotate}) scale(${initialState.scale})`
+            );
+
+            // Set basic attributes
+            textElement.setAttribute('font-size', style.fontSize);
+            textElement.setAttribute('font-weight', style.fontWeight);
+            textElement.style.fontFamily = style.fontFamily;
+            textElement.setAttribute('fill', '#000');
+            textElement.setAttribute('text-anchor', 'middle'); // Center text horizontally
+
+            // Add initial content
+            const lines = content.split('\n');
+            lines.forEach((line, index) => {
+                const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                tspan.setAttribute('x', '0');
+                if (index === 0) {
+                    tspan.setAttribute('dy', '0em'); // First line stays at the initial position
+                } else {
+                    tspan.setAttribute('dy', `${textState.lineHeight}em`); // Subsequent lines move down by lineHeight
+                }
+                tspan.textContent = line;
+                textElement.appendChild(tspan);
+            });
+
+            // Add event listeners
+            textElement.addEventListener('click', (event) => {
+                event.stopPropagation();
+                selectElement(textElement);
+            });
+
+            // Add explicit touch event listeners
+            textElement.addEventListener('touchend', (event) => {
+                // Only handle as a tap if no significant movement occurred
+                // This is cross-checked with the draggable functionality
+                const touchDuration = new Date().getTime() - touchStartTime;
+                if (!hasMoved && touchDuration < 300) {
+                    event.stopPropagation();
+                    selectElement(textElement);
+                }
+            });
+
+            textElement.addEventListener('dblclick', (event) => {
+                enableInlineEditing(textElement);
+            });
+
+            // For mobile, use long press to enable inline editing
+            let longPressTimer;
+            textElement.addEventListener('touchstart', (event) => {
+                longPressTimer = setTimeout(() => {
+                    enableInlineEditing(textElement);
+                }, 800); // 800ms is a good duration for long press
+            });
+
+            textElement.addEventListener('touchend', () => {
+                clearTimeout(longPressTimer);
+            });
+
+            textElement.addEventListener('touchmove', () => {
+                clearTimeout(longPressTimer);
+            });
+
+            makeElementDraggable(textElement);
+
+            return textElement;
+        }
+
+        // Add Element to Canvas
+        function addElementToCanvas(textElement) {
+            const textGroup = document.getElementById('text-group');
+            textGroup.appendChild(textElement);
+            makeElementDraggable(textElement);
+            saveState();
+        }
+
+        // Missing code between functions
+        function updateUIForText() {
+            const textSizeSlider = document.getElementById('text-size');
+            if (textSizeSlider) {
+                textSizeSlider.value = textState.fontSize;
+            }
+
+            updateFormattingButtons();
+        }
+
+        // Update Selected Text
+        function updateSelectedText() {
+            const textInput = document.getElementById('text-input');
+            const content = textInput.value;
+
+            if (!selectedElement && content.trim() !== '') {
+                // Create a new text element since none is selected
+                const newTextElement = addTextElement(content, {
+                    fontSize: textState.fontSize,
+                    fontWeight: textState.isBold ? 'bold' : 'normal',
+                    fontFamily: textState.fontFamily
+                });
+
+                addElementToCanvas(newTextElement);
+                selectTextElement(newTextElement);
+            } else if (selectedElement) {
+                // Update the existing selected element
+                updateText();
+            }
+        }
+
+        // Update Text
+        function updateText() {
+            if (!selectedElement || selectedElement.tagName !== 'text') return;
+
+            const textInput = document.getElementById('text-input');
+            const content = textInput.value;
+            const currentTransform = selectedElement.getAttribute('transform');
+            const currentState = elementState.get(selectedElement);
+
+            // Preserve whitespace
+            selectedElement.setAttribute('xml:space', 'preserve');
+            selectedElement.style.whiteSpace = 'pre';
+
+            // Clear existing content while maintaining position and state
+            selectedElement.innerHTML = '';
+
+            // Check if we need curved text
+            if (textState.curve !== 0 && content.indexOf('\n') === -1) {
+                // Create or update path for curved text
+                const pathId = createTextPath(selectedElement, textState.curve);
+
+                // Create textPath for the curved text
+                const textPath = document.createElementNS('http://www.w3.org/2000/svg', 'textPath');
+                textPath.setAttribute('href', `#${pathId}`);
+                textPath.setAttribute('startOffset', '50%');
+                textPath.setAttribute('text-anchor', textState.textAlign === 'middle' ? 'middle' :
+                    textState.textAlign === 'end' ? 'end' : 'start');
+                textPath.textContent = content;
+
+                // Add the textPath to the text element
+                selectedElement.appendChild(textPath);
+
+                // Store the curve value
+                selectedElement.setAttribute('data-curve', textState.curve);
+            } else {
+                // Regular text (no curve or multi-line)
+                // Remove any existing path if curve is now 0
+                if (textState.curve === 0) {
+                    const pathId = selectedElement.getAttribute('data-path-id');
+                    if (pathId) {
+                        const pathElement = document.getElementById(pathId);
+                        if (pathElement) {
+                            pathElement.remove();
+                        }
+                        selectedElement.removeAttribute('data-path-id');
+                    }
+                }
+
+                // Split content into lines and create tspans
+                const lines = content.split('\n');
+                lines.forEach((line, index) => {
+                    const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                    tspan.setAttribute('x', '0');
+                    if (index === 0) {
+                        tspan.setAttribute('dy', '0em'); // First line stays at the initial position
+                    } else {
+                        tspan.setAttribute('dy', `${textState.lineHeight}em`); // Subsequent lines move down by lineHeight
+                    }
+                    tspan.textContent = line;
+                    selectedElement.appendChild(tspan);
+                });
+            }
+
+            // Apply current styles
+            selectedElement.style.fontFamily = textState.fontFamily;
+            selectedElement.setAttribute('font-size', textState.fontSize);
+            selectedElement.setAttribute('font-weight', textState.isBold ? 'bold' : 'normal');
+            selectedElement.style.fontStyle = textState.isItalic ? 'italic' : 'normal';
+            selectedElement.style.textDecoration = `${textState.isUnderline ? 'underline' : ''} ${textState.isStrikethrough ? 'line-through' : ''}`.trim();
+            selectedElement.style.textTransform = textState.textTransform;
+            selectedElement.setAttribute('text-anchor', textState.textAlign);
+
+            // Apply letter spacing
+            selectedElement.style.letterSpacing = `${textState.letterSpacing}px`;
+
+            // Store line height and letter spacing in data attributes
+            selectedElement.setAttribute('data-line-height', textState.lineHeight);
+            selectedElement.setAttribute('data-letter-spacing', textState.letterSpacing);
+
+            // Restore position and transformation
+            if (currentTransform) {
+                selectedElement.setAttribute('transform', currentTransform);
+            }
+            if (currentState) {
+                elementState.set(selectedElement, currentState);
+            }
+
+            saveState();
+        }
+
+        // Update Formatting Buttons
+        function updateFormattingButtons() {
+            const boldButton = document.querySelector('.format-button[onclick="toggleBold()"]');
+            const italicButton = document.querySelector('.format-button[onclick="toggleItalic()"]');
+            const underlineButton = document.querySelector('.format-button[onclick="toggleUnderline()"]');
+            const strikethroughButton = document.querySelector('.format-button[onclick="toggleStrikethrough()"]');
+            const alignLeftButton = document.querySelector('.format-button[onclick="changeTextAlign(\'left\')"]');
+            const alignCenterButton = document.querySelector('.format-button[onclick="changeTextAlign(\'center\')"]');
+            const alignRightButton = document.querySelector('.format-button[onclick="changeTextAlign(\'right\')"]');
+            const uppercaseButton = document.querySelector('.format-button[onclick="toggleUppercase()"]');
+
+            if (boldButton) boldButton.classList.toggle('active', textState.isBold);
+            if (italicButton) italicButton.classList.toggle('active', textState.isItalic);
+            if (underlineButton) underlineButton.classList.toggle('active', textState.isUnderline);
+            if (strikethroughButton) strikethroughButton.classList.toggle('active', textState.isStrikethrough);
+            if (alignLeftButton) alignLeftButton.classList.toggle('active', textState.textAlign === 'start');
+            if (alignCenterButton) alignCenterButton.classList.toggle('active', textState.textAlign === 'middle');
+            if (alignRightButton) alignRightButton.classList.toggle('active', textState.textAlign === 'end');
+            if (uppercaseButton) uppercaseButton.classList.toggle('active', textState.textTransform === 'uppercase');
+        }
+
+        // Toggle Bold
+        function toggleBold() {
+            textState.isBold = !textState.isBold;
+            updateText();
+            updateFormattingButtons();
+            saveState();
+        }
+
+        // Toggle Italic
+        function toggleItalic() {
+            textState.isItalic = !textState.isItalic;
+            updateText();
+            updateFormattingButtons();
+            saveState();
+        }
+
+        // Toggle Underline
+        function toggleUnderline() {
+            textState.isUnderline = !textState.isUnderline;
+            updateText();
+            updateFormattingButtons();
+            saveState();
+        }
+
+        // Toggle Strikethrough
+        function toggleStrikethrough() {
+            textState.isStrikethrough = !textState.isStrikethrough;
+            updateText();
+            updateFormattingButtons();
+            saveState();
+        }
+
+        // Change Text Align
+        function changeTextAlign(align) {
+            if (!selectedElement || selectedElement.tagName !== 'text') return;
+
+            const alignments = {
+                'left': 'start',
+                'center': 'middle',
+                'right': 'end'
+            };
+
+            textState.textAlign = alignments[align];
+            selectedElement.setAttribute('text-anchor', textState.textAlign);
+
+            // Update all tspan elements to maintain alignment
+            const tspans = selectedElement.getElementsByTagName('tspan');
+            Array.from(tspans).forEach(tspan => {
+                tspan.setAttribute('text-anchor', textState.textAlign);
+            });
+
+            updateText();
+            saveState();
+            updateFormattingButtons();
+        }
+
+        // Update Text Size
+        function updateTextSize() {
+            if (selectedElement && selectedElement.tagName === 'text') {
+                const textSize = document.getElementById('text-size').value;
+                textState.fontSize = textSize;
+                updateText();
+                saveState();
+            }
+        }
+
+        // Update Line Height
+        function updateLineHeight() {
+            const lineHeight = parseFloat(document.getElementById('line-height').value);
+            textState.lineHeight = lineHeight.toFixed(1);
+            updateText();
+            saveState();
+        }
+
+        // Update Letter Spacing
+        function updateLetterSpacing() {
+            const letterSpacing = parseFloat(document.getElementById('letter-spacing').value);
+            textState.letterSpacing = letterSpacing.toFixed(1);
+            updateText();
+            saveState();
+        }
+
+        // Toggle Uppercase
+        function toggleUppercase() {
+            textState.textTransform = textState.textTransform === 'uppercase' ? 'none' : 'uppercase';
+            updateText();
+            updateFormattingButtons();
+            saveState();
+        }
+
+        // Update Text Curve
+        function updateTextCurve() {
+            const curveSlider = document.getElementById('text-curve');
+            if (curveSlider) {
+                textState.curve = parseInt(curveSlider.value);
+                updateText();
+                saveState();
+            }
+        }
+
+        // Create or update a curve path for text
+        function createTextPath(textElement, curve) {
+            // Get unique ID for the path
+            let pathId = textElement.getAttribute('data-path-id');
+            if (!pathId) {
+                pathId = `text-path-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+                textElement.setAttribute('data-path-id', pathId);
+            }
+
+            // Find existing path or create new one
+            let pathElement = document.getElementById(pathId);
+            if (!pathElement) {
+                pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                pathElement.id = pathId;
+                pathElement.setAttribute('fill', 'none');
+                pathElement.setAttribute('stroke', 'transparent'); // Hidden path
+
+                // Insert path before text element for proper reference
+                const textGroup = document.getElementById('text-group');
+                textGroup.insertBefore(pathElement, textElement);
+            }
+
+            // Get text bounding box to size the path appropriately
+            const bbox = textElement.getBBox();
+            const width = bbox.width || 200; // Fallback width if bbox is not available
+
+            // Create the curved path
+            // M = start point, Q = quadratic curve, control point and end point
+            // When curve is 0, it's a straight line
+            // Use negative startX to offset the automatic centering of textPath
+            // This prevents the "jump" when first applying curve
+            const startX = -width / 2;
+            const startY = 0;
+            const endX = width / 2;
+            const endY = 0;
+            const controlX = 0; // Center control point (was width/2)
+            const controlY = -curve; // Negative curve makes text curve upward
+
+            const pathData = `M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`;
+            pathElement.setAttribute('d', pathData);
+
+            return pathId;
+        }
+
+        // Enable Inline Editing
+        function enableInlineEditing(textElement) {
+            const textInput = document.getElementById('text-input');
+            selectTextElement(textElement);
+            textInput.focus();
+        }
+
+        // Make Element Draggable
+        function makeElementDraggable(element) {
+            // Track touch events for distinguishing tap from drag
+            let touchStartTime = 0;
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let hasMoved = false;
+
+            // Common function for handling both mouse and touch events
+            function setupDragHandlers(startEvent) {
+                // Determine if it's a touch or mouse event
+                const isTouchEvent = startEvent.type.includes('touch');
+
+                // For touch events, don't immediately prevent default to allow selection
+                if (!isTouchEvent) {
+                    startEvent.preventDefault();
+                }
+
+                // Get the appropriate coordinates based on event type
+                let startX = isTouchEvent ? startEvent.touches[0].clientX : startEvent.clientX;
+                let startY = isTouchEvent ? startEvent.touches[0].clientY : startEvent.clientY;
+
+                // For touch events, store the starting position and time
+                if (isTouchEvent) {
+                    touchStartTime = new Date().getTime();
+                    touchStartX = startX;
+                    touchStartY = startY;
+                    hasMoved = false;
+                }
+
+                let state = elementState.get(element) || { translateX: 0, translateY: 0, scale: 1, rotate: 0 };
+                let { translateX, translateY, rotate, scale } = state;
+
+                let isDragging = true;
+
+                // Generic movement handler for both mouse and touch
+                const onMove = (moveEvent) => {
+                    if (!isDragging) return;
+
+                    // Get current coordinates
+                    const clientX = isTouchEvent ? moveEvent.touches[0].clientX : moveEvent.clientX;
+                    const clientY = isTouchEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
+
+                    let dx = clientX - startX;
+                    let dy = clientY - startY;
+
+                    // For touch events, detect if movement has occurred beyond a minimum threshold
+                    if (isTouchEvent) {
+                        // Calculate total movement distance
+                        const totalMovement = Math.sqrt(dx * dx + dy * dy);
+
+                        // Mark as moved if movement exceeds 5px (prevents small finger jitter)
+                        if (totalMovement > 5) {
+                            hasMoved = true;
+                            moveEvent.preventDefault(); // Prevent scrolling once we're definitely dragging
+                        }
+                    }
+
+                    translateX += dx;
+                    translateY += dy;
+
+                    // Apply updated transformations
+                    if (element instanceof SVGElement) {
+                        element.setAttribute(
+                            'transform',
+                            `translate(${translateX}, ${translateY}) rotate(${rotate}) scale(${scale})`
+                        );
+                    } else {
+                        element.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg) scale(${scale})`;
+                    }
+
+                    state.translateX = translateX;
+                    state.translateY = translateY;
+                    elementState.set(element, state);
+
+                    startX = clientX;
+                    startY = clientY;
+
+                    // Check for alignment
+                    checkAlignment(element);
+
+                    // Update resize handles if present and if this is the selected element
+                    if (element === selectedElement) {
+                        const handles = document.querySelectorAll('.resize-handle');
+                        handles.forEach(handle => {
+                            updateHandlePosition(handle, element, handle.getAttribute('data-handle'));
+                        });
+                    }
+                };
+
+                // End dragging for both mouse and touch
+                const onEnd = (endEvent) => {
+                    isDragging = false;
+                    hideGuides(); // Hide guides when dragging stops
+
+                    // Remove the appropriate event listeners
+                    if (isTouchEvent) {
+                        document.removeEventListener('touchmove', onMove);
+                        document.removeEventListener('touchend', onEnd);
+
+                        // Calculate the time elapsed for the touch interaction
+                        const touchEndTime = new Date().getTime();
+                        const touchDuration = touchEndTime - touchStartTime;
+
+                        // If the interaction was a tap (short duration + minimal movement)
+                        // then select the element instead of just ending the drag
+                        if (!hasMoved && touchDuration < 300) {
+                            // This was a tap, so select the element
+                            selectElement(element);
+                            endEvent.preventDefault(); // Prevent any default behavior
+                        }
+                    } else {
+                        document.removeEventListener('mousemove', onMove);
+                        document.removeEventListener('mouseup', onEnd);
+                    }
+
+                    saveState();
+                };
+
+                // Add the appropriate event listeners
+                if (isTouchEvent) {
+                    document.addEventListener('touchmove', onMove, { passive: false });
+                    document.addEventListener('touchend', onEnd);
+                } else {
+                    document.addEventListener('mousemove', onMove);
+                    document.addEventListener('mouseup', onEnd);
+                }
+            }
+
+            // Mouse event handlers
+            element.addEventListener('mousedown', function (event) {
+                // For mouse events, a click should select the element first
+                if (event.button === 0 && !event.ctrlKey) { // Left click without modifier keys
+                    selectElement(element);
+                }
+                setupDragHandlers(event);
+            });
+
+            // Touch event handlers for mobile
+            element.addEventListener('touchstart', setupDragHandlers, { passive: true });
+
+            // Add wheel event for scaling and rotating
+            element.addEventListener('wheel', function (event) {
+                let state = elementState.get(element) || { translateX: 0, translateY: 0, scale: 1, rotate: 0 };
+                let { scale, rotate } = state;
+
+                if (event.shiftKey) {
+                    scale += event.deltaY * -0.01;
+                    scale = Math.max(0.5, Math.min(scale, 5)); // Limit scaling
+                }
+
+                if (event.altKey) {
+                    rotate += event.deltaY * -0.5;
+                }
+
+                state.scale = scale;
+                state.rotate = rotate;
+
+                if (element instanceof SVGElement) {
+                    element.setAttribute(
+                        'transform',
+                        `translate(${state.translateX}, ${state.translateY}) rotate(${state.rotate}) scale(${state.scale})`
+                    );
+                } else {
+                    element.style.transform = `translate(${state.translateX}px, ${state.translateY}px) rotate(${state.rotate}deg) scale(${state.scale})`;
+                }
+
+                elementState.set(element, state); // Save the updated state
+
+                event.preventDefault();
+            });
+        }
+
+        // Alignment Guides
+        function checkAlignment(element) {
+            const designArea = document.getElementById('design-area');
+            const designRect = designArea.getBoundingClientRect();
+            const elementRect = element.getBoundingClientRect();
+
+            const designCenterX = designRect.left + designRect.width / 2;
+            const designCenterY = designRect.top + designRect.height / 2;
+
+            const elementCenterX = elementRect.left + elementRect.width / 2;
+            const elementCenterY = elementRect.top + elementRect.height / 2;
+
+            const threshold = 5; // Adjust as needed for sensitivity
+
+            const deltaX = elementCenterX - designCenterX;
+            const deltaY = elementCenterY - designCenterY;
+
+            const isAlignedHorizontally = Math.abs(deltaX) <= threshold;
+            const isAlignedVertically = Math.abs(deltaY) <= threshold;
+
+            if (isAlignedHorizontally) {
+                showVerticalGuide();
+
+                // Snap element to center horizontally
+                const state = elementState.get(element);
+                const adjustmentX = -deltaX; // Amount needed to center element
+                state.translateX += adjustmentX;
+                elementState.set(element, state);
+
+                applyElementTransform(element, state);
+            } else {
+                hideVerticalGuide();
+            }
+
+            if (isAlignedVertically) {
+                showHorizontalGuide();
+
+                // Snap element to center vertically
+                const state = elementState.get(element);
+                const adjustmentY = -deltaY; // Amount needed to center element
+                state.translateY += adjustmentY;
+                elementState.set(element, state);
+
+                applyElementTransform(element, state);
+            } else {
+                hideHorizontalGuide();
+            }
+        }
+
+        function showVerticalGuide() {
+            const verticalGuide = document.getElementById('vertical-guide');
+            verticalGuide.style.display = 'block';
+        }
+
+        function hideVerticalGuide() {
+            const verticalGuide = document.getElementById('vertical-guide');
+            verticalGuide.style.display = 'none';
+        }
+
+        function showHorizontalGuide() {
+            const horizontalGuide = document.getElementById('horizontal-guide');
+            horizontalGuide.style.display = 'block';
+        }
+
+        function hideHorizontalGuide() {
+            const horizontalGuide = document.getElementById('horizontal-guide');
+            horizontalGuide.style.display = 'none';
+        }
+
+        function hideGuides() {
+            hideVerticalGuide();
+            hideHorizontalGuide();
+        }
+
+        function applyElementTransform(element, state) {
+            const { translateX, translateY, rotate, scale } = state;
+
+            if (element instanceof SVGElement) {
+                element.setAttribute(
+                    'transform',
+                    `translate(${translateX}, ${translateY}) rotate(${rotate}) scale(${scale})`
+                );
+            } else {
+                element.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg) scale(${scale})`;
+            }
+        }
+
+        // Select Element
+        function selectElement(element) {
+            if (selectedElement) {
+                selectedElement.classList.remove('selected-element');
+                // Remove existing resize handles
+                removeResizeHandles();
+            }
+            selectedElement = element;
+            selectedElement.classList.add('selected-element');
+
+            if (element.tagName === 'text') {
+                selectTextElement(element);
+                // Add resize handles for text as well
+                addResizeHandles(element);
+                // Add rotation handle
+                addRotationHandle(element);
+            } else {
+                // Handle other elements if necessary
+                updateUIForSelectedElement(element);
+                // Add resize handles for all elements
+                addResizeHandles(element);
+                // Add rotation handle
+                addRotationHandle(element);
+            }
+        }
+
+        // Add resize handles to selected element
+        function addResizeHandles(element) {
+            const designArea = document.getElementById('design-area');
+            const positions = ['nw', 'ne', 'sw', 'se'];
+
+            positions.forEach(pos => {
+                const handle = document.createElement('div');
+                handle.className = `resize-handle handle-${pos}`;
+                handle.setAttribute('data-handle', pos);
+
+                // Position handle relative to the element
+                updateHandlePosition(handle, element, pos);
+
+                // Make the handle draggable for resizing with both mouse and touch
+                handle.addEventListener('mousedown', startResize);
+                // Touch events are handled by the document-level event listener
+
+                designArea.appendChild(handle);
+            });
+        }
+
+        // Update handle positions based on element
+        function updateHandlePosition(handle, element, position) {
+            const rect = element.getBoundingClientRect();
+            const designRect = document.getElementById('design-area').getBoundingClientRect();
+
+            // Calculate position relative to design area
+            switch (position) {
+                case 'nw':
+                    handle.style.left = (rect.left - designRect.left - 5) + 'px';
+                    handle.style.top = (rect.top - designRect.top - 5) + 'px';
+                    break;
+                case 'ne':
+                    handle.style.left = (rect.right - designRect.left - 5) + 'px';
+                    handle.style.top = (rect.top - designRect.top - 5) + 'px';
+                    break;
+                case 'sw':
+                    handle.style.left = (rect.left - designRect.left - 5) + 'px';
+                    handle.style.top = (rect.bottom - designRect.top - 5) + 'px';
+                    break;
+                case 'se':
+                    handle.style.left = (rect.right - designRect.left - 5) + 'px';
+                    handle.style.top = (rect.bottom - designRect.top - 5) + 'px';
+                    break;
+            }
+        }
+
+        // Remove all resize and rotation handles
+        function removeResizeHandles() {
+            const handles = document.querySelectorAll('.resize-handle, .rotation-handle');
+            handles.forEach(handle => handle.remove());
+        }
+
+        // Start resize operation
+        function startResize(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (!selectedElement) return;
+
+            const handle = event.target;
+            const handlePosition = handle.getAttribute('data-handle');
+            const state = getElementState(selectedElement);
+
+            // Determine if it's a touch or mouse event
+            const isTouchEvent = event.type.includes('touch');
+
+            // Get appropriate coordinates
+            const clientX = isTouchEvent ? event.touches[0].clientX : event.clientX;
+            const clientY = isTouchEvent ? event.touches[0].clientY : event.clientY;
+
+            const startX = clientX;
+            const startY = clientY;
+            const startScale = state.scale;
+            const startWidth = selectedElement.getBoundingClientRect().width / startScale;
+            const startHeight = selectedElement.getBoundingClientRect().height / startScale;
+
+            // Store original positions for proportional scaling
+            const originalX = state.translateX;
+            const originalY = state.translateY;
+
+            // Generic handler for both mouse and touch
+            function onMove(moveEvent) {
+                // Get current coordinates
+                const clientX = isTouchEvent ? moveEvent.touches[0].clientX : moveEvent.clientX;
+                const clientY = isTouchEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
+
+                const dx = clientX - startX;
+                const dy = clientY - startY;
+
+                // Calculate scale factor based on handle position and drag direction
+                let scaleFactor = 1;
+
+                // Use larger scale factor for mobile to make resizing more responsive
+                const scaleMultiplier = isTouchEvent ? 1.5 : 1;
+
+                // Calculate diagonal distance for more natural corner scaling
+                let distance = 0;
+
+                // Determine direction to scale based on corner position
+                switch (handlePosition) {
+                    case 'se':
+                        distance = (dx + dy) / 2; // Average of horizontal and vertical movement
+                        break;
+                    case 'sw':
+                        distance = (-dx + dy) / 2;
+                        break;
+                    case 'ne':
+                        distance = (dx + -dy) / 2;
+                        break;
+                    case 'nw':
+                        distance = (-dx + -dy) / 2;
+                        break;
+                }
+
+                // Apply scaling based on distance moved
+                scaleFactor = 1 + (distance * scaleMultiplier / 50); // More sensitive scaling
+
+                // Apply scaling
+                const newScale = startScale * scaleFactor;
+
+                // Limit scaling to reasonable values
+                if (newScale >= 0.2 && newScale <= 5) {
+                    state.scale = newScale;
+
+                    // Update textState if this is a text element
+                    if (selectedElement.tagName === 'text') {
+                        textState.scale = newScale;
+                    }
+
+                    // Apply the new state
+                    applyElementTransform(selectedElement, state);
+
+                    // Update resize handles
+                    const handles = document.querySelectorAll('.resize-handle');
+                    handles.forEach(h => {
+                        updateHandlePosition(h, selectedElement, h.getAttribute('data-handle'));
+                    });
+                }
+            }
+
+            // End handler for both mouse and touch
+            function onEnd(e) {
+                // Prevent the event from bubbling up to the document click handler
+                if (e) {
+                    e.stopPropagation();
+                }
+
+                // Remove appropriate event listeners
+                if (isTouchEvent) {
+                    document.removeEventListener('touchmove', onMove);
+                    document.removeEventListener('touchend', onEnd);
+                } else {
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onEnd);
+                }
+
+                // Update any scale sliders to reflect the new scale
+                if (selectedElement && selectedElement.tagName === 'text') {
+                    const textRotateSlider = document.getElementById('text-rotate-slider');
+                    if (textRotateSlider) {
+                        textRotateSlider.value = state.rotate;
+                    }
+                } else if (selectedElement) {
+                    const scaleSlider = document.getElementById('upload-scale-slider') ||
+                        document.getElementById('element-scale-slider');
+                    if (scaleSlider) {
+                        scaleSlider.value = state.scale;
+                    }
+                }
+
+                saveState();
+
+                // Ensure the element stays selected
+                if (selectedElement) {
+                    selectedElement.classList.add('selected-element');
+                    // Re-add resize handles if they were removed
+                    const existingHandles = document.querySelectorAll('.resize-handle');
+                    if (existingHandles.length === 0) {
+                        addResizeHandles(selectedElement);
+                    }
+                }
+
+                // Return false to prevent further event handling
+                return false;
+            }
+
+            // Add the appropriate event listeners
+            if (isTouchEvent) {
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', function (e) {
+                    // Mark event so we know it's coming from a resize operation
+                    e._isResizeEnd = true;
+                    onEnd(e);
+                });
+            } else {
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', function (e) {
+                    // Mark event so we know it's coming from a resize operation
+                    e._isResizeEnd = true;
+                    onEnd(e);
+                });
+            }
+        }
+
+        // Add touch event listeners to resize handles
+        // Delegate touch events for resize handles (they're dynamically created)
+        document.addEventListener('touchstart', function (event) {
+            if (event.target.classList.contains('resize-handle')) {
+                startResize(event);
+            }
+        }, { passive: false });
+
+        // Get element state, creating if needed
+        function getElementState(element) {
+            let state = elementState.get(element);
+
+            if (!state) {
+                state = { translateX: 0, translateY: 0, scale: 1, rotate: 0 };
+                elementState.set(element, state);
+            }
+
+            return state;
+        }
+
+        // Update UI for Selected Element
+        function updateUIForSelectedElement(element) {
+            // Show rotate and scale sliders for uploads and elements
+            if (element && (element.tagName === 'IMG' || element.classList.contains('design-item'))) {
+                // Get state for this element
+                let state = elementState.get(element) || { rotate: 0, scale: 1 };
+
+                // Update all possible rotation sliders
+                const rotateSliders = [
+                    document.getElementById('upload-rotate-slider'),
+                    document.getElementById('element-rotate-slider')
+                ];
+
+                rotateSliders.forEach(slider => {
+                    if (slider) {
+                        slider.value = state.rotate;
+                    }
+                });
+
+                // Update all possible scale sliders
+                const scaleSliders = [
+                    document.getElementById('upload-scale-slider'),
+                    document.getElementById('element-scale-slider')
+                ];
+
+                scaleSliders.forEach(slider => {
+                    if (slider) {
+                        slider.value = state.scale;
+                    }
+                });
+            }
+        }
+
+        // Select Text Element
+        function selectTextElement(element) {
+            if (selectedElement) {
+                selectedElement.classList.remove('selected-element');
+            }
+            selectedElement = element;
+            lastSelectedTextElement = element;
+            selectedElement.classList.add('selected-element');
+
+            // Get or create element state for tracking transformations
+            let state = elementState.get(selectedElement);
+            if (!state) {
+                // Parse transform attribute to get current rotation and scale
+                const transformAttr = selectedElement.getAttribute('transform') || '';
+                let rotate = 0;
+                let scale = 1;
+                let translateX = 0;
+                let translateY = 0;
+
+                // Extract values from transform attribute
+                const rotateMatch = /rotate\(([^)]+)\)/.exec(transformAttr);
+                if (rotateMatch) rotate = parseFloat(rotateMatch[1]);
+
+                const scaleMatch = /scale\(([^)]+)\)/.exec(transformAttr);
+                if (scaleMatch) scale = parseFloat(scaleMatch[1]);
+
+                const translateMatch = /translate\(([^,]+),\s*([^)]+)\)/.exec(transformAttr);
+                if (translateMatch) {
+                    translateX = parseFloat(translateMatch[1]);
+                    translateY = parseFloat(translateMatch[2]);
+                }
+
+                // Create and store element state
+                state = { translateX, translateY, rotate, scale };
+                elementState.set(selectedElement, state);
+            }
+
+            // Update textState with transformation values
+            textState.rotate = state.rotate;
+            textState.scale = state.scale;
+            textState.translateX = state.translateX;
+            textState.translateY = state.translateY;
+
+            const textInput = document.getElementById('text-input');
+            if (textInput) {
+                // Check if this is a curved text (using textPath)
+                const textPath = selectedElement.querySelector('textPath');
+                if (textPath) {
+                    // Single line curved text
+                    textInput.value = textPath.textContent;
+                } else {
+                    // Regular text with possible line breaks
+                    const tspans = selectedElement.querySelectorAll('tspan');
+                    const lines = Array.from(tspans).map(tspan => tspan.textContent);
+                    textInput.value = lines.join('\n');
+                }
+                textInput.focus();
+            }
+
+            // Update textState with current styles
+            textState.fontFamily = selectedElement.style.fontFamily || textState.fontFamily;
+            textState.fontSize = selectedElement.getAttribute('font-size') || textState.fontSize;
+            textState.isBold = selectedElement.getAttribute('font-weight') === 'bold';
+            textState.isItalic = selectedElement.style.fontStyle === 'italic';
+            textState.isUnderline = selectedElement.style.textDecoration && selectedElement.style.textDecoration.includes('underline');
+            textState.isStrikethrough = selectedElement.style.textDecoration && selectedElement.style.textDecoration.includes('line-through');
+            textState.textAlign = selectedElement.getAttribute('text-anchor') || 'middle'; // Default to 'middle'
+            textState.textTransform = selectedElement.style.textTransform || 'none';
+
+            // Get curved text data if it exists
+            textState.curve = parseInt(selectedElement.getAttribute('data-curve') || 0);
+
+            // Update curve slider if it exists
+            const curveSlider = document.getElementById('text-curve');
+            if (curveSlider) {
+                curveSlider.value = textState.curve;
+            }
+
+            // Retrieve line height and letter spacing from data attributes
+            textState.lineHeight = parseFloat(selectedElement.getAttribute('data-line-height')) || 1.2;
+            textState.letterSpacing = parseFloat(selectedElement.getAttribute('data-letter-spacing')) || 0;
+
+            // Update UI controls to reflect current values
+            const lineHeightSlider = document.getElementById('line-height');
+            if (lineHeightSlider) {
+                lineHeightSlider.value = textState.lineHeight;
+            }
+
+            const letterSpacingSlider = document.getElementById('letter-spacing');
+            if (letterSpacingSlider) {
+                letterSpacingSlider.value = textState.letterSpacing;
+            }
+
+            const textSizeSlider = document.getElementById('text-size');
+            if (textSizeSlider) {
+                textSizeSlider.value = textState.fontSize;
+            }
+
+            const textRotateSlider = document.getElementById('text-rotate-slider');
+            if (textRotateSlider) {
+                textRotateSlider.value = textState.rotate;
+            }
+
+            // Update formatting buttons and UI elements
+            if (typeof updateFormattingButtons === 'function') {
+                updateFormattingButtons();
+            }
+
+            // Call the updateUIForText function to update text-related UI elements
+            if (typeof updateUIForText === 'function') {
+                updateUIForText();
+            }
+        }
+
+        // Global click listener to clear selection when clicking outside elements
+        document.addEventListener('click', (event) => {
+            // Additional check: Do not deselect when ending resize operations
+            if (event.type === 'mouseup' && event._isResizeEnd) {
+                return;
+            }
+
+            // Check if we're clicking on design area but not on any relevant elements
+            if (event.target.id === 'design-area' ||
+                (!event.target.closest('.design-item') &&
+                    !event.target.closest('.tool-panel') &&
+                    !event.target.closest('#text-input') &&
+                    !event.target.closest('#fontDropdown') &&
+                    !event.target.closest('.slider') &&
+                    !event.target.closest('.tool-button') &&
+                    !event.target.closest('.resize-handle'))
+            ) {
+                if (selectedElement) {
+                    selectedElement.classList.remove('selected-element');
+                    removeResizeHandles();
+                    selectedElement = null;
+                }
+            }
+        });
+
+        // Delete Selected Element
+        document.addEventListener('keydown', (event) => {
+            if ((event.key === 'Backspace' || event.key === 'Delete') && document.activeElement !== document.getElementById('text-input')) {
+                deleteSelectedElement();
+            }
+        });
+
+        function deleteSelectedElement() {
+            if (selectedElement) {
+                selectedElement.remove();
+                elementState.delete(selectedElement);
+                removeResizeHandles();
+                selectedElement = null;
+                saveState();
+            }
+        }
+
+        // Load Image from URL (for Templates and Elements)
+        function loadImageFromURL(url) {
+            const img = new Image();
+            img.src = url;
+            img.classList.add('design-item');
+            img.style.position = 'absolute';
+            img.style.top = '0';  // Position at the top
+            img.style.left = '0'; // Position at the left
+            img.style.width = '100%';  // Set to full width of the design area
+            img.style.height = '100%';  // Set to full height of the design area
+            img.style.objectFit = 'contain'; // Ensure the entire image is visible
+
+            img.onload = function () {
+                const designArea = document.getElementById('design-area');
+                designArea.appendChild(img);
+
+                // Initialize element state
+                elementState.set(img, { translateX: 0, translateY: 0, scale: 1, rotate: 0 });
+
+                // Make the image draggable
+                makeElementDraggable(img);
+
+                // Make the image selectable
+                img.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    selectElement(img);
+                });
+            };
+
+            img.onerror = function () {
+                console.error('Failed to load the image.');
+            };
+        }
+
+        // Handle File Upload
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    addUploadedImage(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    addUploadedImage(e.target.result);
+                };
+                reader.readAsDataURL(files[0]);
+            }
+        }
+
+        function addUploadedImage(src) {
+            const img = new Image();
+            img.src = src;
+            img.classList.add('design-item');
+            img.style.position = 'absolute';
+            img.style.width = '100px'; // Smaller initial size
+            img.style.height = '100px';
+            img.style.transform = 'translate(0px, 0px) rotate(0deg) scale(1)';
+
+            img.onload = function () {
+                document.getElementById('design-area').appendChild(img);
+                elementState.set(img, { translateX: 0, translateY: 0, scale: 1, rotate: 0 });
+                makeElementDraggable(img);
+                img.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    selectElement(img);
+                });
+                saveState(); // Save the state after adding a new element
+            };
+
+            img.onerror = function () {
+                console.error('Failed to load the image.');
+            };
+        }
+
+
+        // Rotate Selected Element
+        function rotateSelectedElement(value = null) {
+            if (selectedElement) {
+                let state = elementState.get(selectedElement) || { translateX: 0, translateY: 0, scale: 1, rotate: 0 };
+
+                // If a specific value was passed (from rotation handle), use it
+                if (value !== null) {
+                    state.rotate = value;
+                } else {
+                    // Otherwise use slider value
+                    const rotateSlider = document.getElementById('text-rotate-slider') ||
+                        document.getElementById('element-rotate-slider') ||
+                        document.getElementById('upload-rotate-slider');
+
+                    if (rotateSlider) {
+                        const rotateValue = parseFloat(rotateSlider.value);
+                        state.rotate = rotateValue;
+                    }
+                }
+
+                // Update textState if this is a text element
+                if (selectedElement.tagName === 'text') {
+                    textState.rotate = state.rotate;
+                }
+
+                if (selectedElement instanceof SVGElement) {
+                    selectedElement.setAttribute(
+                        'transform',
+                        `translate(${state.translateX}, ${state.translateY}) rotate(${state.rotate}) scale(${state.scale})`
+                    );
+                } else {
+                    selectedElement.style.transform = `translate(${state.translateX}px, ${state.translateY}px) rotate(${state.rotate}deg) scale(${state.scale})`;
+                }
+
+                elementState.set(selectedElement, state);
+
+                // Update all handles positions after rotation
+                const handles = document.querySelectorAll('.resize-handle, .rotation-handle');
+                handles.forEach(handle => {
+                    if (handle.classList.contains('resize-handle')) {
+                        updateHandlePosition(handle, selectedElement, handle.getAttribute('data-handle'));
+                    } else if (handle.classList.contains('rotation-handle')) {
+                        updateRotationHandlePosition(handle, selectedElement);
+
+                        // Update angle indicator if it's visible (during active rotation)
+                        const angleIndicator = handle.querySelector('.angle-indicator');
+                        if (angleIndicator && angleIndicator.style.display === 'block') {
+                            angleIndicator.innerText = Math.round(state.rotate) + '°';
+                        }
+                    }
+                });
+
+                // Update any sliders to match the new rotation
+                if (selectedElement.tagName === 'text') {
+                    const textRotateSlider = document.getElementById('text-rotate-slider');
+                    if (textRotateSlider) {
+                        textRotateSlider.value = state.rotate;
+                    }
+                } else {
+                    const rotateSlider = document.getElementById('element-rotate-slider') ||
+                        document.getElementById('upload-rotate-slider');
+                    if (rotateSlider) {
+                        rotateSlider.value = state.rotate;
+                    }
+                }
+
+                saveState(); // Save the state after rotating
+            }
+        }
+
+        // Add rotation handle to an element
+        function addRotationHandle(element) {
+            const designArea = document.getElementById('design-area');
+
+            // Create rotation handle
+            const handle = document.createElement('div');
+            handle.className = 'rotation-handle';
+
+            // Create angle indicator
+            const angleIndicator = document.createElement('div');
+            angleIndicator.className = 'angle-indicator';
+            angleIndicator.innerText = '0°';
+            handle.appendChild(angleIndicator);
+
+            // Position handle relative to the element (top-center)
+            updateRotationHandlePosition(handle, element);
+
+            // Add event listeners for rotation
+            handle.addEventListener('mousedown', startRotation);
+            // Touch events are handled by document-level event listener
+
+            designArea.appendChild(handle);
+        }
+
+        // Update rotation handle position
+        function updateRotationHandlePosition(handle, element) {
+            const rect = element.getBoundingClientRect();
+            const designRect = document.getElementById('design-area').getBoundingClientRect();
+
+            // Calculate distance from element (we want handle to be 35px above the element)
+            const distanceFromElement = 35;
+            const handleSize = 24; // The handle is now 24px in diameter
+
+            // Position at the top center of the element, just above it
+            handle.style.left = (rect.left + rect.width / 2 - designRect.left - handleSize / 2) + 'px';
+            handle.style.top = (rect.top - designRect.top - distanceFromElement) + 'px';
+
+            // Calculate line height to match the distance between handle and element edge
+            // The line should run from the bottom of the handle to the top of the element
+            const lineHeight = distanceFromElement - handleSize;
+
+            // Apply the proper height via inline style to override the default
+            handle.style.setProperty('--line-height', lineHeight + 'px');
+        }
+
+        // Start rotation operation
+        function startRotation(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (!selectedElement) return;
+
+            // Find the rotation handle and angle indicator
+            const rotationHandle = event.currentTarget;
+            const angleIndicator = rotationHandle.querySelector('.angle-indicator');
+
+            // Show the angle indicator
+            if (angleIndicator) {
+                angleIndicator.style.display = 'block';
+                // Initialize with current rotation
+                const currentState = elementState.get(selectedElement) || { rotate: 0 };
+                angleIndicator.innerText = Math.round(currentState.rotate) + '°';
+            }
+
+            // Determine if it's a touch or mouse event
+            const isTouchEvent = event.type.includes('touch');
+
+            // Get appropriate coordinates
+            const clientX = isTouchEvent ? event.touches[0].clientX : event.clientX;
+            const clientY = isTouchEvent ? event.touches[0].clientY : event.clientY;
+
+            // Get the center point of the element
+            const rect = selectedElement.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            // Calculate the starting angle
+            const startAngle = Math.atan2(clientY - centerY, clientX - centerX) * (180 / Math.PI);
+
+            // Get current rotation
+            const state = elementState.get(selectedElement) || { translateX: 0, translateY: 0, scale: 1, rotate: 0 };
+            const startRotation = state.rotate;
+
+            // Generic handler for both mouse and touch
+            function onMove(moveEvent) {
+                // Get current coordinates
+                const currentX = isTouchEvent ? moveEvent.touches[0].clientX : moveEvent.clientX;
+                const currentY = isTouchEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
+
+                // Calculate the current angle
+                const currentAngle = Math.atan2(currentY - centerY, currentX - centerX) * (180 / Math.PI);
+
+                // Calculate the angle difference
+                let angleDiff = currentAngle - startAngle;
+
+                // Apply the new rotation
+                const newRotation = (startRotation + angleDiff) % 360;
+
+                // Update angle indicator
+                if (angleIndicator) {
+                    // Round to nearest degree for display
+                    const displayAngle = Math.round(newRotation);
+                    angleIndicator.innerText = displayAngle + '°';
+                }
+
+                // Update element rotation
+                rotateSelectedElement(newRotation);
+            }
+
+            // End handler for both mouse and touch
+            function onEnd(e) {
+                // Remove appropriate event listeners
+                if (isTouchEvent) {
+                    document.removeEventListener('touchmove', onMove);
+                    document.removeEventListener('touchend', onEnd);
+                } else {
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onEnd);
+                }
+
+                // Hide the angle indicator
+                if (angleIndicator) {
+                    angleIndicator.style.display = 'none';
+                }
+
+                // Mark as rotation end to prevent deselection
+                if (e) {
+                    e._isRotationEnd = true;
+                    e.stopPropagation();
+                }
+
+                saveState();
+            }
+
+            // Add appropriate event listeners
+            if (isTouchEvent) {
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            } else {
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+            }
+        }
+
+        // Add touch event handler for rotation handle
+        document.addEventListener('touchstart', function (event) {
+            if (event.target.classList.contains('rotation-handle')) {
+                startRotation(event);
+            }
+        }, { passive: false });
+
+        // Scale Selected Element
+        function scaleSelectedElement() {
+            if (selectedElement) {
+                // Retrieve the current state of the selected element
+                let state = elementState.get(selectedElement) || { translateX: 0, translateY: 0, scale: 1, rotate: 0 };
+
+                // Get the scale value from the relevant slider
+                const scaleSlider = document.getElementById('template-scale-slider') ||
+                    document.getElementById('element-scale-slider') ||
+                    document.getElementById('upload-scale-slider');
+
+                // For text elements, don't use text-size for scaling - that affects fontSize
+                // but we want to scale the entire element
+                let scaleValue = 1;
+                if (selectedElement.tagName === 'text') {
+                    // If it's a text element, check if there's already a scale value in the state
+                    scaleValue = parseFloat(state.scale) || 1;
+                } else {
+                    // For non-text elements, use the slider value
+                    scaleValue = scaleSlider ? parseFloat(scaleSlider.value) : 1;
+                }
+
+                // Update the scale value in the state
+                state.scale = scaleValue;
+
+                // Update textState if this is a text element
+                if (selectedElement.tagName === 'text') {
+                    textState.scale = scaleValue;
+                }
+
+                // Apply the transformation to the selected element
+                if (selectedElement instanceof SVGElement) {
+                    selectedElement.setAttribute(
+                        'transform',
+                        `translate(${state.translateX}, ${state.translateY}) rotate(${state.rotate}) scale(${state.scale})`
+                    );
+                } else {
+                    selectedElement.style.transform = `translate(${state.translateX}px, ${state.translateY}px) rotate(${state.rotate}deg) scale(${state.scale})`;
+                }
+
+                // Save the updated state back to the elementState map
+                elementState.set(selectedElement, state);
+
+                // Update resize handles after scaling
+                const handles = document.querySelectorAll('.resize-handle');
+                handles.forEach(handle => {
+                    updateHandlePosition(handle, selectedElement, handle.getAttribute('data-handle'));
+                });
+
+                saveState(); // Save the state after scaling
+            }
+        }
+
+        // Download Design
+        function downloadDesign(actionType = "") {
+            const designArea = document.getElementById('design-area');
+            // Include both the image elements and the SVG text element
+            const elements = designArea.querySelectorAll('.design-item, #svg-text');
+
+            // Create the target canvas at desired resolution
+            const canvas = document.createElement('canvas');
+            canvas.width = 1000; // Adjust as needed for higher quality
+            canvas.height = 1000;
+            const context = canvas.getContext('2d');
+
+            // Enable high-quality rendering settings
+            context.imageSmoothingEnabled = true;
+            context.imageSmoothingQuality = 'high';
+
+            // Scaling factor to match the design area to the canvas size
+            const scaleFactor = canvas.width / designArea.clientWidth;
+
+            // Function to draw the background
+            const drawBackground = () => {
+                return new Promise((resolve) => {
+                    // Simply draw the default jewelry shape background
+                    context.fillStyle = 'transparent';
+                    context.fillRect(0, 0, canvas.width, canvas.height);
+                    resolve();
+                });
+            };
+
+            // Function to draw each design element on the canvas
+            const drawElement = (el) => {
+                return new Promise((resolve) => {
+                    const state = elementState.get(el) || { translateX: 0, translateY: 0, scale: 1, rotate: 0 };
+
+                    if (el.tagName.toLowerCase() === 'img' || el.classList.contains('design-item')) {
+                        // Handle image elements
+                        const img = new Image();
+                        img.crossOrigin = 'anonymous';
+                        img.src = el.src;
+                        img.onload = () => {
+                            context.save();
+
+                            const rect = el.getBoundingClientRect();
+                            const designRect = designArea.getBoundingClientRect();
+                            const xPos = (rect.left - designRect.left) * scaleFactor;
+                            const yPos = (rect.top - designRect.top) * scaleFactor;
+
+                            // Apply transformations
+                            context.translate(xPos + (el.clientWidth * state.scale * scaleFactor) / 2, yPos + (el.clientHeight * state.scale * scaleFactor) / 2);
+                            context.rotate((state.rotate * Math.PI) / 180);
+                            context.scale(state.scale * scaleFactor, state.scale * scaleFactor);
+
+                            // Draw image
+                            context.drawImage(img, -el.clientWidth / 2, -el.clientHeight / 2, el.clientWidth, el.clientHeight);
+
+                            context.restore();
+                            resolve();
+                        };
+                        img.onerror = () => resolve();
+                    } else if (el.tagName.toLowerCase() === 'svg') {
+                        // Handle SVG elements (including text)
+                        const serializer = new XMLSerializer();
+
+                        // Clone the SVG to avoid affecting the displayed version
+                        const svgClone = el.cloneNode(true);
+
+                        // Ensure proper dimensions in the serialized SVG
+                        svgClone.setAttribute('width', designArea.clientWidth);
+                        svgClone.setAttribute('height', designArea.clientHeight);
+
+                        const svgString = serializer.serializeToString(svgClone);
+                        const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+                        const url = URL.createObjectURL(svgBlob);
+
+                        const img = new Image();
+                        img.crossOrigin = 'anonymous';
+                        img.onload = () => {
+                            context.save();
+
+                            const rect = el.getBoundingClientRect();
+                            const designRect = designArea.getBoundingClientRect();
+                            const xPos = (rect.left - designRect.left) * scaleFactor;
+                            const yPos = (rect.top - designRect.top) * scaleFactor;
+
+                            // Apply transformations
+                            context.translate(xPos, yPos);
+                            context.scale(scaleFactor, scaleFactor);
+
+                            // Draw the SVG image onto the canvas
+                            context.drawImage(img, 0, 0, designArea.clientWidth, designArea.clientHeight);
+
+                            context.restore();
+                            URL.revokeObjectURL(url);
+                            resolve();
+                        };
+                        img.onerror = () => {
+                            console.error('Failed to load SVG image for download');
+                            URL.revokeObjectURL(url);
+                            resolve();
+                        };
+                        img.src = url;
+                    } else {
+                        resolve();
+                    }
+                });
+            };
+
+            const drawAllElements = async () => {
+                try {
+                    await drawBackground();
+
+                    for (const el of elements) {
+                        await drawElement(el);
+                    }
+
+                    // Save the canvas as PNG
+                    canvas.toBlob((blob) => {
+                        window.parent.postMessage({
+                            type: actionType,
+                            name: "design.png",
+                            mime: "image/png",
+                            data: blob
+                        },
+                            'https://app.ownprint.co',    // parent origin
+                        );
+                    }, 'image/png');
+                } catch (error) {
+                    console.error('Error drawing elements:', error);
+                    alert('An error occurred while generating the download. Please try again.');
+                }
+            };
+
+            drawAllElements();
+        }
+
+
+
+    </script>
+    <!-- Mobile text positioning fix -->
+    <script>
+        // Add responsive SVG handling for proper text positioning on mobile
+        function updateSvgForMobile() {
+            // Update SVG viewBox to match design area dimensions
+            const designArea = document.getElementById('design-area');
+            const svgText = document.getElementById('svg-text');
+
+            if (designArea && svgText) {
+                // For consistent coordinate system, maintain 400x400 viewBox
+                // but ensure SVG fills container at all sizes
+                svgText.setAttribute('viewBox', '0 0 400 400');
+                svgText.setAttribute('width', '100%');
+                svgText.setAttribute('height', '100%');
+                svgText.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+            }
+        }
+
+        // Add window resize handler
+        window.addEventListener('resize', updateSvgForMobile);
+
+        // Run once at startup
+        document.addEventListener("DOMContentLoaded", updateSvgForMobile);
+
+        // Simple global delete key handler with high priority
+        document.addEventListener('keydown', function (e) {
+            // Check if Delete or Backspace key was pressed
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                // Only handle deletion if we're not in the text input field
+                if (selectedElement && document.activeElement !== document.getElementById('text-input')) {
+                    // Prevent default only when not editing text
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Remove handles first
+                    const handles = document.querySelectorAll('.resize-handle, .rotation-handle');
+                    handles.forEach(handle => handle.remove());
+
+                    // Remove the element
+                    selectedElement.remove();
+
+                    // Clear selection
+                    selectedElement = null;
+
+                    // Save state if available
+                    if (typeof saveState === 'function') {
+                        saveState();
+                    }
+
+                    // Return false to make extra sure other handlers don't run
+                    return false;
+                }
+            }
+        }, true); // Using capture phase to ensure we get the event first
+    </script>
+</body>
+
+</html>
