@@ -1739,7 +1739,7 @@
         // Function to load JSON data
         async function loadDesignsData() {
             try {
-                const response = await fetch('/vertical_bar_editor/designs.json');
+                const response = await fetch('/editor/vertical_bar_editor/designs.json');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -1912,7 +1912,7 @@
         // Function to load categories data
         async function loadCategoriesData() {
             try {
-                const response = await fetch('/vertical_bar_editor/categories.json');
+                const response = await fetch('/editor/vertical_bar_editor/categories.json');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -1986,7 +1986,7 @@
         // Function to load elements data
         async function loadElementsData() {
             try {
-                const response = await fetch('/vertical_bar_editor/elements.json');
+                const response = await fetch('/editor/vertical_bar_editor/elements.json');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -2329,7 +2329,7 @@
         // Function to load fonts data
         async function loadFontsData() {
             try {
-                const response = await fetch('/vertical_bar_editor/fonts.json');
+                const response = await fetch('/editor/vertical_bar_editor/fonts.json');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
