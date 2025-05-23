@@ -1,0 +1,57 @@
+[
+  {
+    "category": "Shapes",
+    "elements": [
+      { "name": "Circle", "src": "https://via.placeholder.com/75?text=Circle", "fullSrc": "https://via.placeholder.com/400?text=Circle" },
+      { "name": "Square", "src": "https://via.placeholder.com/75?text=Square", "fullSrc": "https://via.placeholder.com/400?text=Square" },
+      { "name": "Triangle", "src": "https://via.placeholder.com/75?text=Triangle", "fullSrc": "https://via.placeholder.com/400?text=Triangle" },
+      { "name": "Heart", "src": "https://via.placeholder.com/75?text=Heart", "fullSrc": "https://via.placeholder.com/400?text=Heart" },
+      { "name": "Star", "src": "https://via.placeholder.com/75?text=Star", "fullSrc": "https://via.placeholder.com/400?text=Star" },
+      { "name": "Diamond", "src": "https://via.placeholder.com/75?text=Diamond", "fullSrc": "https://via.placeholder.com/400?text=Diamond" }
+    ]
+  },
+  {
+    "category": "Nature",
+    "elements": [
+      { "name": "png", "src": "https://storage.googleapis.com/ownprint_public/designs_vault/elements/tstpngg.png", "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/elements/tstpngg.png" },
+      { "name": "svg", "src": "https://storage.googleapis.com/ownprint_public/designs_vault/elements/tsttttttttheartsvg.svg", "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/elements/tsttttttttheartsvg.svg" },
+      { "name": "Flower", "src": "https://via.placeholder.com/75?text=Flower", "fullSrc": "https://via.placeholder.com/400?text=Flower" },
+      { "name": "Sun", "src": "https://via.placeholder.com/75?text=Sun", "fullSrc": "https://via.placeholder.com/400?text=Sun" },
+      { "name": "Moon", "src": "https://via.placeholder.com/75?text=Moon", "fullSrc": "https://via.placeholder.com/400?text=Moon" },
+      { "name": "Mountain", "src": "https://via.placeholder.com/75?text=Mountain", "fullSrc": "https://via.placeholder.com/400?text=Mountain" }
+    ]
+  },
+  {
+    "category": "Animals",
+    "elements": [
+      { "name": "Dog", "src": "https://via.placeholder.com/75?text=Dog", "fullSrc": "https://via.placeholder.com/400?text=Dog" },
+      { "name": "Cat", "src": "https://via.placeholder.com/75?text=Cat", "fullSrc": "https://via.placeholder.com/400?text=Cat" },
+      { "name": "Bird", "src": "https://via.placeholder.com/75?text=Bird", "fullSrc": "https://via.placeholder.com/400?text=Bird" },
+      { "name": "Fish", "src": "https://via.placeholder.com/75?text=Fish", "fullSrc": "https://via.placeholder.com/400?text=Fish" },
+      { "name": "Horse", "src": "https://via.placeholder.com/75?text=Horse", "fullSrc": "https://via.placeholder.com/400?text=Horse" },
+      { "name": "Butterfly", "src": "https://via.placeholder.com/75?text=Butterfly", "fullSrc": "https://via.placeholder.com/400?text=Butterfly" }
+    ]
+  },
+  {
+    "category": "Symbols",
+    "elements": [
+      { "name": "Infinity", "src": "https://via.placeholder.com/75?text=Infinity", "fullSrc": "https://via.placeholder.com/400?text=Infinity" },
+      { "name": "Peace", "src": "https://via.placeholder.com/75?text=Peace", "fullSrc": "https://via.placeholder.com/400?text=Peace" },
+      { "name": "Music Note", "src": "https://via.placeholder.com/75?text=Music", "fullSrc": "https://via.placeholder.com/400?text=Music" },
+      { "name": "Anchor", "src": "https://via.placeholder.com/75?text=Anchor", "fullSrc": "https://via.placeholder.com/400?text=Anchor" },
+      { "name": "Cross", "src": "https://via.placeholder.com/75?text=Cross", "fullSrc": "https://via.placeholder.com/400?text=Cross" },
+      { "name": "Arrow", "src": "https://via.placeholder.com/75?text=Arrow", "fullSrc": "https://via.placeholder.com/400?text=Arrow" }
+    ]
+  },
+  {
+    "category": "Zodiac",
+    "elements": [
+      { "name": "Aries", "src": "https://storage.googleapis.com/ownprint_public/designs_vault/zodiac/1Aries_Zodiac_Signs-min.png", "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/zodiac/1Aries_Zodiac_Signs-min.png" },
+      { "name": "Taurus", "src": "https://via.placeholder.com/75?text=Taurus", "fullSrc": "https://via.placeholder.com/400?text=Taurus" },
+      { "name": "Gemini", "src": "https://via.placeholder.com/75?text=Gemini", "fullSrc": "https://via.placeholder.com/400?text=Gemini" },
+      { "name": "Cancer", "src": "https://via.placeholder.com/75?text=Cancer", "fullSrc": "https://via.placeholder.com/400?text=Cancer" },
+      { "name": "Leo", "src": "https://via.placeholder.com/75?text=Leo", "fullSrc": "https://via.placeholder.com/400?text=Leo" },
+      { "name": "Virgo", "src": "https://via.placeholder.com/75?text=Virgo", "fullSrc": "https://via.placeholder.com/400?text=Virgo" }
+    ]
+  }
+]

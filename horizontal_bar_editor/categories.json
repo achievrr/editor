@@ -1,0 +1,40 @@
+{
+  "categories": [
+    {
+      "id": "anniversaries",
+      "name": "Anniversaries"
+    },
+    {
+      "id": "birthdays",
+      "name": "Birthdays"
+    },
+    {
+      "id": "romantic",
+      "name": "Romantic & Couples"
+    },
+    {
+      "id": "pets",
+      "name": "Pets & Animal Lovers"
+    },
+    {
+      "id": "inspirational",
+      "name": "Inspirational & Faith-Based"
+    },
+    {
+      "id": "family",
+      "name": "Family & Loved Ones"
+    },
+    {
+      "id": "zodiac",
+      "name": "Zodiac & Astrology"
+    },
+    {
+      "id": "memorial",
+      "name": "Memorial & Keepsakes"
+    },
+    {
+      "id": "minimalist",
+      "name": "Minimalist & Initials"
+    }
+  ]
+}
