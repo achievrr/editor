@@ -1,5 +1,5 @@
 {
-  "Anniversaries": [
+  "anniversaries": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/heart_designs/Anniversaries/Star%20Map.png",
       "alt": "Star Map – Celestial Anniversary Heart Pendant",
@@ -51,7 +51,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/heart_designs/Anniversaries/names_infinite_untilforever.png"
     }
   ],
-  "Memorial & Keepsakes": [
+  "memorial": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/heart_designs/Memorial%20%26%20Keepsakes/Pet%20Potrait.png",
       "alt": "Pet Portrait – Memorial Heart Necklace for Pets",
@@ -73,7 +73,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/heart_designs/Memorial%20%26%20Keepsakes/name_rainbowbridge.png"
     }
   ],
-  "Pets & Animal Lovers": [
+  "pets": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/heart_designs/Pets%20%26%20Animal%20Lovers/Pet%20Potrait.png",
       "alt": "Pet Portrait – Custom Heart Necklace for Pet Lovers",
@@ -95,7 +95,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/heart_designs/Pets%20%26%20Animal%20Lovers/name_rainbowbridge.png"
     }
   ],
-  "Romantic & Couples": [
+  "romantic": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/heart_designs/Romantic%20%26%20Couples/Star%20Map.png",
       "alt": "Star Map – Celestial Moment for Couples Heart Pendant",

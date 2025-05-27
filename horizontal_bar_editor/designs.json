@@ -1,5 +1,5 @@
 {
-  "Birthdays": [
+  "birthdays": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/horizontal_bar_designs/Birthdays/coordinates.png",
       "alt": "Coordinates – Birthday Location Bar Necklace",
@@ -26,7 +26,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/horizontal_bar_designs/Birthdays/zodiac_sign.png"
     }
   ],
-  "Faith & Inspirational": [
+  "inspirational": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/horizontal_bar_designs/Faith%20%26%20Inspirational/bible_verse.png",
       "alt": "Bible Verse – Scripture-Inspired Horizontal Bar Necklace",
@@ -43,7 +43,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/horizontal_bar_designs/Faith%20%26%20Inspirational/blessed_cross_flower.png"
     }
   ],
-  "Family & Relationships": [
+  "family": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/horizontal_bar_designs/Family%20%26%20Relationships/coordinates.png",
       "alt": "Coordinates – Special Family Location Bar Necklace",
@@ -75,7 +75,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/horizontal_bar_designs/Family%20%26%20Relationships/roman_numerals.png"
     }
   ],
-  "Pets & Animal Lovers": [
+  "pets": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/horizontal_bar_designs/Pets%20%26%20Animal%20lovers/name_catpaw.png",
       "alt": "Name + Cat Paw – Personalized Cat Lover Bar Necklace",

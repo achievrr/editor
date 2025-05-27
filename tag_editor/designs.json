@@ -1,5 +1,5 @@
 {
-  "Faith & Inspiration": [
+  "inspirational": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/tag_designs/Faith%20%26%20Inspiration/bibleverse_matthew17_20.png",
       "alt": "Matthew 17:20 Bible Verse – Faith Tag Necklace",
@@ -21,7 +21,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/tag_designs/Faith%20%26%20Inspiration/bibleverse_psalm23_4.png"
     }
   ],
-  "Family & Relationships": [
+  "family": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/tag_designs/Family%20%26%20Relationships/Best_dad_ever.png",
       "alt": "Best Dad Ever – Engraved Dog Tag for Fathers",
@@ -83,7 +83,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/tag_designs/Family%20%26%20Relationships/portrait_old_couple.png"
     }
   ],
-  "Memorial Keepsakes": [
+  "memorial": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/tag_designs/Memorial%20Keepsakes/memorial_name_date.png",
       "alt": "Memorial Name + Date – Simple Remembrance Tag",
@@ -95,7 +95,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/tag_designs/Memorial%20Keepsakes/memorial_wings_name_date.png"
     }
   ],
-  "Pets & Animal Lovers": [
+  "pets": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/tag_designs/Pets%20%26%20Animal%20lovers/love_dog_pet.png",
       "alt": "Love Dog Silhouette – Cute Pet Lovers Dog Tag Necklace",

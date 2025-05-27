@@ -1,5 +1,5 @@
 {
-  "Anniversaries": [
+  "anniversaries": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/vertical_bar_designs/Anniversaries/Start%20Map.png",
       "alt": "Star Map – Engraved Anniversary Vertical Bar Necklace",
@@ -41,7 +41,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/vertical_bar_designs/Anniversaries/the_day_we_said_yes_date.png"
     }
   ],
-  "Birthdays": [
+  "birthdays": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/vertical_bar_designs/Birthdays/21_birthday.png",
       "alt": "21st Birthday – Milestone Engraved Vertical Bar",
@@ -88,7 +88,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/vertical_bar_designs/Birthdays/zodiac_name.png"
     }
   ],
-  "Inspirational & Faith-Based": [
+  "inspirational": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/vertical_bar_designs/Inspirational%20%26%20Faith%20Based/faith_1john4_18.png",
       "alt": "1 John 4:18 – Perfect Love Casts Out Fear",
@@ -165,7 +165,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/vertical_bar_designs/Inspirational%20%26%20Faith%20Based/faith_psalm_46_10.png"
     }
   ],
-  "Pets & Animal Lovers": [
+  "pets": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/vertical_bar_designs/Pets%20%26%20Animal%20Lovers/Dog%20Name%20Paw.png",
       "alt": "Dog Name + Paw Icon – Custom Dog Lover Necklace",
@@ -212,7 +212,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/vertical_bar_designs/Pets%20%26%20Animal%20Lovers/petname_lovepeticon.png"
     }
   ],
-  "Romantic & Couples": [
+  "romantic": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/vertical_bar_designs/Romantic%20%26%20Couples/Start%20Map.png",
       "alt": "Star Map – Celestial Moment for Couples Necklace",
@@ -249,7 +249,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/vertical_bar_designs/Romantic%20%26%20Couples/zodiac_signs.png"
     }
   ],
-  "Zodiac & Astrology": [
+  "zodiac": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/vertical_bar_designs/Zodiac%20%26%20Astrology/Start%20Map.png",
       "alt": "Star Map – Celestial Moment Zodiac Bar Necklace",

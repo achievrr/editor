@@ -1,5 +1,5 @@
 {
-  "Anniversaries": [
+  "anniversaries": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/3d_bar_designs/Anniversaries/Coordinates.png",
       "alt": "Coordinates Engraving – Anniversary 3D Bar Necklace",
@@ -56,7 +56,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/3d_bar_designs/Anniversaries/names_heart_date.png"
     }
   ],
-  "Birthdays": [
+  "birthdays": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/3d_bar_designs/Birthdays/Date.png",
       "alt": "Birth Date Engraving – Minimalist Birthday Bar Necklace",
@@ -113,7 +113,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/3d_bar_designs/Birthdays/zodiac_name.png"
     }
   ],
-  "Inspirational & Faith-Based": [
+  "inspirational": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/3d_bar_designs/Inspirational%20%26%20Faith%20Based/Bible_verse.png",
       "alt": "Bible Verse Engraving – Faith-Inspired 3D Bar Necklace",
@@ -135,7 +135,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/3d_bar_designs/Inspirational%20%26%20Faith%20Based/japanese_name.png"
     }
   ],
-  "Pets & Animal Lovers": [
+  "pets": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/3d_bar_designs/Pets%20%26%20Animal%20Lovers/Dog%20Name.png",
       "alt": "Dog Name Engraving – Personalized Pet Lover Necklace",
@@ -162,7 +162,7 @@
       "fullSrc": "https://storage.googleapis.com/ownprint_public/designs_vault/3d_bar_designs/Pets%20%26%20Animal%20Lovers/petname_pawheart.png"
     }
   ],
-  "Romantic & Couples": [
+  "romantic": [
     {
       "src": "https://storage.googleapis.com/ownprint_public/designs_vault/3d_bar_designs/Romantic%20%26%20Couples/Coordinates.png",
       "alt": "Coordinates Engraving – Meaningful Couple Bar Necklace",
