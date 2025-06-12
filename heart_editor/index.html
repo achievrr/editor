@@ -3939,7 +3939,7 @@
         }
 
         // Download Design
-        function downloadDesign() {
+        function downloadDesign(actionType = "") {
             const designArea = document.getElementById('design-area');
             // Include both the image elements and the SVG text element
             const elements = designArea.querySelectorAll('.design-item, #svg-text');
